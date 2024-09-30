@@ -8,7 +8,7 @@ const navLinks = [
 
 export default function NavBar() {
   return (
-    <div className="bg-slate-800 text-white">
+    <nav className="bg-slate-800 text-white">
       <div className="max-w-5xl mx-auto flex justify-between items-center p-4">
         <h1 className="text-4xl font-extralight">
           Splend<span className="font-semibold">Event</span>
@@ -19,6 +19,6 @@ export default function NavBar() {
           ))}
         </div>
       </div>
-    </div>
+    </nav>
   );
 }
