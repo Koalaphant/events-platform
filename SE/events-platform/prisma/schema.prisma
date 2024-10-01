@@ -6,20 +6,21 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  relationMode = "prisma"
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+model Event {
+  id          Int      @id @default(autoincrement()) // Primary key with auto-increment
+  title       String   // Title of the event
+  description String?  // Optional description of the event
+  location    String   // Location of the event
+  startTime   DateTime // Start time of the event
+  endTime     DateTime // End time of the event
+  createdAt   DateTime @default(now()) // Timestamp when the event was created
+  updatedAt   DateTime @updatedAt // Timestamp when the event was last updated
 }
