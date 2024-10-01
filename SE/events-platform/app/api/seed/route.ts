@@ -4,6 +4,15 @@ import { db } from "@/lib/db"; // Adjust the import path as needed
 import { eventsData } from "./eventsData"; // Import the event data
 
 export async function POST() {
+  const isDevelopment = process.env.NODE_ENVIRONMENT === "development";
+
+  if (!isDevelopment) {
+    return new Response(
+      JSON.stringify({ message: "Unauthorized or not in development mode." }),
+      { status: 403, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
   try {
     // Check if events data is valid (if needed)
     if (!eventsData.length) {
