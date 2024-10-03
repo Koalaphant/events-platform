@@ -18,8 +18,8 @@ async function testConnection() {
     throw new Error("Not in development mode.");
   }
 
-  await prisma.event.deleteMany({});
   try {
+    await prisma.event.deleteMany({});
     await prisma.$connect();
     console.log("Database connection successful!");
   } catch (error) {
