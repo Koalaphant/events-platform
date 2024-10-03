@@ -1,11 +1,39 @@
 // app/api/seed/route.ts
 
-import { db } from "@/lib/db"; // Adjust the import path as needed
-import { eventsData } from "./eventsData"; // Import the event data
+import { db } from "@/lib/db";
+import { eventsData } from "./eventsData";
 
 export async function POST() {
-  const isDevelopment = process.env.NODE_ENVIRONMENT === "development";
+  const isDevelopment = process.env.NODE_ENV === "development";
 
+  const apiKey = process.env.NEXT_PUBLIC_TICKETMASTER_CONSUMER_KEY;
+  const url = `https://app.ticketmaster.com/discovery/v2/events.json?classificationName=Comedy&city=London&size=1&locale=*&apikey=${apiKey}`;
+
+  // try {
+  //   const response = await fetch(url);
+
+  //   if (!response.ok) {
+  //     throw new Error(`HTTP error. Status: ${response.status}`);
+  //   }
+
+  //   const data = await response.json();
+
+  //   // Corrected logging statement to access the expected path
+  //   // console.log(JSON.stringify(data._embedded, null, 2));
+  //   console.log(process.env.NODE_ENV);
+
+  //   // You may want to check if _embedded and events exist
+  //   if (data._embedded && data._embedded.events) {
+  //     console.log(`Number of events found: ${data._embedded.events.length}`);
+  //   } else {
+  //     console.log("No events found in the response.");
+  //   }
+  // } catch (error) {
+  //   console.log("Error fetching data:", error);
+  // }
+
+  // return new Response(JSON.stringify({ message: "Test" }), { status: 200 });
+  // Check if not in development mode
   if (!isDevelopment) {
     return new Response(
       JSON.stringify({ message: "Unauthorized or not in development mode." }),
@@ -14,7 +42,6 @@ export async function POST() {
   }
 
   try {
-    // Check if events data is valid (if needed)
     if (!eventsData.length) {
       return new Response(
         JSON.stringify({ message: "No events data provided." }),
@@ -22,7 +49,6 @@ export async function POST() {
       );
     }
 
-    // Seed the database with events
     const createdEvents = await Promise.all(
       eventsData.map((event) => db.event.create({ data: event }))
     );
