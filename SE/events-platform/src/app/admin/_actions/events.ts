@@ -96,7 +96,6 @@ export async function updateEvent(
   await db.event.update({
     where: { id },
     data: {
-      isAvailable: false,
       name: data.name,
       priceInPence: data.priceInPence,
       description: data.description,
