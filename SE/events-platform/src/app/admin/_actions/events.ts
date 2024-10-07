@@ -12,7 +12,7 @@ const imageSchema = fileSchema.refine(
 
 const addSchema = z.object({
   name: z.string().min(1),
-  priceInPence: z.coerce.number().int().min(1),
+  priceInPence: z.coerce.number().int().min(0),
   description: z.string().min(1),
   image: imageSchema.refine((file) => file.size > 0, "Required"),
 });
