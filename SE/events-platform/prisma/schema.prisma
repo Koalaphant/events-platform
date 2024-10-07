@@ -15,7 +15,7 @@ model Event {
   name              String
   priceInPence      Int
   imagePath         String
-  decription        String
+  description        String
   isAvailable       Boolean     @default(true)
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
