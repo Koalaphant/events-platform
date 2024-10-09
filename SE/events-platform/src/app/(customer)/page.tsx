@@ -14,7 +14,7 @@ function getMostPopularEvents() {
   });
 }
 
-function getNewestEvents() {
+async function getNewestEvents() {
   return db.event.findMany({
     where: { isAvailable: true },
     orderBy: { createdAt: "desc" },
