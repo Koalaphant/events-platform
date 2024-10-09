@@ -1,26 +1,35 @@
 import { EventCard, EventCardSkeleton } from "@/components/EventCard";
 import { Button } from "@/components/ui/button";
 import db from "@/db/db";
+import { cache } from "@/lib/cache";
 import { Event } from "@prisma/client";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
-function getMostPopularEvents() {
-  return db.event.findMany({
-    where: { isAvailable: true },
-    orderBy: { orders: { _count: "desc" } },
-    take: 6,
-  });
-}
+const getMostPopularEvents = cache(
+  () => {
+    return db.event.findMany({
+      where: { isAvailable: true },
+      orderBy: { orders: { _count: "desc" } },
+      take: 6,
+    });
+  },
+  ["/", "getMostPopularEvents"],
+  { revalidate: 60 * 60 * 24 }
+);
 
-async function getNewestEvents() {
-  return db.event.findMany({
-    where: { isAvailable: true },
-    orderBy: { createdAt: "desc" },
-    take: 6,
-  });
-}
+const getNewestEvents = cache(
+  () => {
+    return db.event.findMany({
+      where: { isAvailable: true },
+      orderBy: { createdAt: "desc" },
+      take: 6,
+    });
+  },
+  ["/", "getNewestEvents"],
+  { revalidate: 60 * 60 * 24 }
+);
 
 export default function Home() {
   return (

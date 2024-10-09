@@ -4,6 +4,7 @@ import { z } from "zod";
 import fs from "fs/promises";
 import db from "@/db/db";
 import { notFound, redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 const fileSchema = z.instanceof(File, { message: "Required" });
 const imageSchema = fileSchema.refine(
@@ -42,6 +43,8 @@ export async function addEvent(prevState: unknown, formData: FormData) {
     },
   });
 
+  revalidatePath("/");
+  revalidatePath("/events");
   redirect("/admin/events");
 }
 
@@ -53,6 +56,9 @@ export async function toggleEventAvailability(
     where: { id },
     data: { isAvailable },
   });
+
+  revalidatePath("/");
+  revalidatePath("/events");
 }
 
 export async function deleteEvent(id: string) {
@@ -61,6 +67,9 @@ export async function deleteEvent(id: string) {
   if (event == null) return notFound();
 
   await fs.unlink(`public${event.imagePath}`);
+
+  revalidatePath("/");
+  revalidatePath("/events");
 }
 
 const editSchema = addSchema.extend({
@@ -103,5 +112,7 @@ export async function updateEvent(
     },
   });
 
+  revalidatePath("/");
+  revalidatePath("/events");
   redirect("/admin/events");
 }

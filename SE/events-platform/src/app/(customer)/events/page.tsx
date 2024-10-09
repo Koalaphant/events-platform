@@ -1,13 +1,18 @@
 import { EventCard, EventCardSkeleton } from "@/components/EventCard";
 import db from "@/db/db";
+import { cache } from "@/lib/cache";
 import { Suspense } from "react";
 
-function getEvents() {
-  return db.event.findMany({
-    where: { isAvailable: true },
-    orderBy: { name: "asc" },
-  });
-}
+const getEvents = cache(
+  () => {
+    return db.event.findMany({
+      where: { isAvailable: true },
+      orderBy: { name: "asc" },
+    });
+  },
+  ["/events", "getEvents"],
+  { revalidate: 60 * 60 * 24 }
+);
 
 export default function page() {
   return (

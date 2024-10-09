@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import db from "@/db/db";
 import { CheckCircle2, MoreVertical, XCircleIcon } from "lucide-react";
-import { formatCurrency } from "@/db/formatters";
+import { formatCurrency } from "@/lib/formatters";
 import { DropdownMenu, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import {
   DropdownMenuContent,
