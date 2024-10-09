@@ -4,7 +4,7 @@ CREATE TABLE "Event" (
     "name" TEXT NOT NULL,
     "priceInPence" INTEGER NOT NULL,
     "imagePath" TEXT NOT NULL,
-    "decription" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "isAvailable" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
@@ -25,9 +25,9 @@ CREATE TABLE "Order" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     "userId" TEXT NOT NULL,
-    "productId" TEXT NOT NULL,
+    "eventId" TEXT NOT NULL,
     CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT "Order_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Event" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Order_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateIndex

@@ -37,7 +37,7 @@ model Order {
   updatedAt         DateTime    @updatedAt
 
   userId            String
-  productId         String
+  eventId           String
   user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  event           Event         @relation(fields: [productId], references: [id], onDelete: Restrict)
+  event           Event         @relation(fields: [eventId], references: [id], onDelete: Restrict)
 }
