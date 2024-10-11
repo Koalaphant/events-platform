@@ -32,12 +32,12 @@ export default function AdminEventsPage() {
           <Link href="/admin/events/new">Add Event</Link>
         </Button>
       </div>
-      <ProductsTable />
+      <EventsTable />
     </>
   );
 }
 
-async function ProductsTable() {
+async function EventsTable() {
   const events = await db.event.findMany({
     select: {
       id: true,

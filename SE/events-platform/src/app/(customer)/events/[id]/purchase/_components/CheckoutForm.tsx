@@ -89,10 +89,6 @@ function Form({
     const orderExists = await userOrderExists(email, eventId);
 
     if (orderExists) {
-      setErrorMessage("");
-    }
-
-    if (orderExists) {
       setErrorMessage("You have already purchased this event");
       setIsLoading(false);
       return;
