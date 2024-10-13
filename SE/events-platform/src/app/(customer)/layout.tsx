@@ -12,6 +12,7 @@ export default function Layout({
       <Nav>
         <NavLink href="/">Home</NavLink>
         <NavLink href="/events">Events</NavLink>
+        <NavLink href="/orders">Orders</NavLink>
       </Nav>
       <div className="container m-6">{children}</div>
     </>

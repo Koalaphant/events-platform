@@ -1,4 +1,5 @@
 import db from "@/db/db";
+import PurchaseReceiptEmail from "@/email/PurchaseReceipt";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import Stripe from "stripe";
@@ -46,12 +47,10 @@ export async function POST(req: NextRequest) {
     });
 
     await resend.emails.send({
-      from: `Support <${process.env.SENDER_EMAIL}>`,
+      from: `SplendEventSupport <${process.env.SENDER_EMAIL}>`,
       to: email,
       subject: "Your ticket is confirmed",
-      react: (
-        <h1>Thank you for your purchase. Your ticket has been confirmed.</h1>
-      ),
+      react: <PurchaseReceiptEmail order={order} event={event} />,
     });
 
     return new NextResponse();
