@@ -51,7 +51,7 @@ export async function emailOrderHistory(
     return { ...order };
   });
 
-  const data = await resend.emails.send({
+  await resend.emails.send({
     from: `SplendEvent Support <${process.env.SENDER_EMAIL}>`,
     to: user.email,
     subject: "Order History",
