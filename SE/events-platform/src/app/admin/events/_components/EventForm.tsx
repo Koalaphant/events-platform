@@ -33,6 +33,21 @@ export function EventForm({ event }: { event?: Event | null }) {
         {error.name && <div className="text-destructive">{error.name}</div>}
       </div>
       <div className="space-y-2">
+        <Label htmlFor="eventDate">Event Date</Label>
+        <Input
+          type="datetime-local"
+          id="eventDate"
+          name="eventDate"
+          required
+          defaultValue={
+            event ? new Date(event.eventDate).toISOString().slice(0, 16) : ""
+          }
+        />
+        {error.eventDate && (
+          <div className="text-destructive">{error.eventDate}</div>
+        )}
+      </div>
+      <div className="space-y-2">
         <Label htmlFor="priceInPence">Price In Pence</Label>
         <Input
           type="number"

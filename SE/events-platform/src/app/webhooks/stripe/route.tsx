@@ -14,7 +14,6 @@ export async function POST(req: NextRequest) {
     process.env.STRIPE_WEBHOOK_SECRET as string
   );
 
-  // Ensure the event is typed correctly
   const stripeEvent = event as Stripe.Event;
 
   if (stripeEvent.type === "charge.succeeded") {

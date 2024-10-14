@@ -6,6 +6,7 @@ CREATE TABLE "Event" (
     "imagePath" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "isAvailable" BOOLEAN NOT NULL DEFAULT true,
+    "eventDate" DATETIME NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
 );

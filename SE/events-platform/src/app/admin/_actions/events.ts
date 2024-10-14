@@ -16,6 +16,7 @@ const addSchema = z.object({
   priceInPence: z.coerce.number().int().min(0),
   description: z.string().min(1),
   image: imageSchema.refine((file) => file.size > 0, "Required"),
+  eventDate: z.coerce.date().transform((date) => date.toISOString()),
 });
 
 export async function addEvent(prevState: unknown, formData: FormData) {
@@ -40,6 +41,7 @@ export async function addEvent(prevState: unknown, formData: FormData) {
       priceInPence: data.priceInPence,
       description: data.description,
       imagePath,
+      eventDate: data.eventDate,
     },
   });
 
@@ -109,6 +111,7 @@ export async function updateEvent(
       priceInPence: data.priceInPence,
       description: data.description,
       imagePath,
+      eventDate: data.eventDate,
     },
   });
 

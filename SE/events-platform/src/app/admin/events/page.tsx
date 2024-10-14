@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import db from "@/db/db";
 import { CheckCircle2, MoreVertical, XCircleIcon } from "lucide-react";
-import { formatCurrency } from "@/lib/formatters";
+import { formatCurrency, formatEventDate } from "@/lib/formatters";
 import { DropdownMenu, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import {
   DropdownMenuContent,
@@ -45,6 +45,7 @@ async function EventsTable() {
       priceInPence: true,
       isAvailable: true,
       _count: { select: { orders: true } },
+      eventDate: true,
     },
     orderBy: { name: "asc" },
   });
@@ -52,6 +53,8 @@ async function EventsTable() {
   if (events.length === 0) {
     return <p>No events found</p>;
   }
+
+  console.log(typeof events[0].eventDate);
 
   return (
     <Table>
@@ -63,6 +66,7 @@ async function EventsTable() {
           <TableHead>Name</TableHead>
           <TableHead>Price</TableHead>
           <TableHead>Orders</TableHead>
+          <TableHead>Event Date</TableHead>
           <TableHead className="w-0">
             <span className="sr-only">Actions</span>
           </TableHead>
@@ -87,6 +91,9 @@ async function EventsTable() {
             <TableCell>{event.name}</TableCell>
             <TableCell>{formatCurrency(event.priceInPence / 100)} </TableCell>
             <TableCell>{event._count.orders}</TableCell>
+            <TableCell>
+              {formatEventDate(event.eventDate.toISOString())}
+            </TableCell>
             <TableCell>
               <DropdownMenu>
                 <DropdownMenuTrigger>
