@@ -1,28 +1,45 @@
+import { Button } from "@/components/ui/button";
+import React from "react";
+
 interface Event {
-  title: string;
+  startTime: string;
+  endTime: string;
+  name: string;
   description: string;
   location: string;
-  startTime: Date;
-  endTime: Date;
 }
 
-export default function AddToGoogleCalendar({ event }: { event: Event }) {
-  const { title, description, location, startTime, endTime } = event;
+type EventProps = {
+  event: Event;
+};
 
-  const googleCalendarUrl = `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(
-    title
-  )}
-      &details=${encodeURIComponent(description)}
-      &location=${encodeURIComponent(location)}
-      &dates=${formatDateForGoogle(startTime)}/${formatDateForGoogle(endTime)}`;
-
-  function formatDateForGoogle(date: Date) {
-    return new Date(date).toISOString().replace(/-|:|\.\d\d\d/g, "");
-  }
+const AddToGoogleCalendar: React.FC<EventProps> = ({ event }) => {
+  const googleCalendarLink = createGoogleCalendarLink(event);
 
   return (
-    <a href={googleCalendarUrl} target="_blank" rel="noopener noreferrer">
-      Add to Google Calendar
+    <a href={googleCalendarLink} target="_blank" rel="noopener noreferrer">
+      <Button className="bg-primary text-white py-2 px-4">
+        Add to Google Calendar <span className="text-sm ml-3">🗓️</span>
+      </Button>
     </a>
   );
-}
+};
+
+const createGoogleCalendarLink = (event: Event) => {
+  const startTime = new Date(event.startTime)
+    .toISOString()
+    .replace(/-|:|\.\d+/g, "")
+    .slice(0, 15); // Format: YYYYMMDDTHHMMSS
+  const endTime = new Date(event.endTime)
+    .toISOString()
+    .replace(/-|:|\.\d+/g, "")
+    .slice(0, 15); // Format: YYYYMMDDTHHMMSS
+
+  return `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+    event.name
+  )}&dates=${startTime}/${endTime}&details=${encodeURIComponent(
+    event.description
+  )}&location=${encodeURIComponent(event.location)}`;
+};
+
+export default AddToGoogleCalendar;

@@ -3,6 +3,7 @@ import { formatCurrency } from "@/lib/formatters";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Stripe from "stripe";
+import AddToGoogleCalendar from "../../events/_components/AddToGoogleCalendar";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
@@ -27,6 +28,14 @@ export default async function SuccessPage({
 
   const isSuccess = paymentIntent.status === "succeeded";
 
+  const formattedEvent = {
+    ...event,
+    startTime: event.startTime.toISOString(),
+    endTime: event.endTime.toISOString(),
+  };
+
+  console.log(formattedEvent);
+
   return (
     <div className="max-w-5xl w-full mx-auto space-y-8">
       <h1 className="text-4xl font-bold">
@@ -35,19 +44,22 @@ export default async function SuccessPage({
       <div className="flex gap-4 items-center">
         <div className="aspect-video flex-shrink-0 w-1/3 relative">
           <Image
-            src={event.imagePath}
-            alt={event.name}
+            src={formattedEvent.imagePath}
+            alt={formattedEvent.name}
             fill
             className="object-cover"
           />
         </div>
         <div>
           <div className="text-lg">
-            {formatCurrency(event.priceInPence / 100)}
+            {formatCurrency(formattedEvent.priceInPence / 100)}
           </div>
-          <h1 className="text-2xl font-bold">{event.name}</h1>
+          <h1 className="text-2xl font-bold">{formattedEvent.name}</h1>
           <div className="line-clamp-3 text-muted-foreground">
-            {event.description}
+            {formattedEvent.description}
+          </div>
+          <div>
+            <AddToGoogleCalendar event={formattedEvent} />
           </div>
         </div>
       </div>
