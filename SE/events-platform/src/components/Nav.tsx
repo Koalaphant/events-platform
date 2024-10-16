@@ -16,7 +16,7 @@ export function Nav({ children }: { children: ReactNode }) {
             </h1>
           </Link>
         </div>
-        <div className="flex gap-4 text-white">{children}</div>
+        <div className="flex  text-white">{children}</div>
       </div>
     </nav>
   );
