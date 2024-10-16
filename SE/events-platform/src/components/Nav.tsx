@@ -7,8 +7,17 @@ import { ComponentProps, ReactNode } from "react";
 
 export function Nav({ children }: { children: ReactNode }) {
   return (
-    <nav className="bg-primary text-primary-foreground flex justify-center px-4">
-      {children}
+    <nav className="bg-primary w-full">
+      <div className="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto px-4">
+        <div className="py-4 md:py-0">
+          <Link href="/">
+            <h1 className="text-2xl text-white">
+              Splend<span className="font-extrabold">Event</span>
+            </h1>
+          </Link>
+        </div>
+        <div className="flex gap-4 text-white">{children}</div>
+      </div>
     </nav>
   );
 }
