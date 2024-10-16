@@ -1,5 +1,5 @@
 import db from "@/db/db";
-import { formatCurrency } from "@/lib/formatters";
+import { formatCurrency, formatEventTime } from "@/lib/formatters";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Stripe from "stripe";
@@ -37,28 +37,37 @@ export default async function SuccessPage({
   console.log(formattedEvent);
 
   return (
-    <div className="max-w-5xl w-full mx-auto space-y-8">
-      <h1 className="text-4xl font-bold">
-        {isSuccess ? "You're going to the event!" : "Failed to purchase"}
+    <div className="max-w-5xl w-full mx-auto">
+      <h1 className="text-4xl font-bold text-center mb-20">
+        {isSuccess ? `You're going to ${event.name}!` : "Failed to purchase"}
       </h1>
-      <div className="flex gap-4 items-center">
-        <div className="aspect-video flex-shrink-0 w-1/3 relative">
-          <Image
-            src={formattedEvent.imagePath}
-            alt={formattedEvent.name}
-            fill
-            className="object-cover"
-          />
+
+      <div className="flex justify-between w-full">
+        <div className="w-1/2">
+          <div className="relative w-full aspect-video">
+            <Image
+              src={formattedEvent.imagePath}
+              alt={formattedEvent.name}
+              fill
+              className="object-cover"
+            />
+          </div>
         </div>
-        <div>
+        <div className="w-1/2 flex flex-col items-center justify-center">
           <div className="text-lg">
             {formatCurrency(formattedEvent.priceInPence / 100)}
           </div>
-          <h1 className="text-2xl font-bold">{formattedEvent.name}</h1>
-          <div className="line-clamp-3 text-muted-foreground">
+          <h1 className="text-2xl font-bold text-center">
+            {formattedEvent.name}
+          </h1>
+          <div className="mb-3">
+            {formatEventTime(event.startTime.toString())} -{" "}
+            {formatEventTime(event.endTime.toString())}
+          </div>
+          <div className="line-clamp-3 text-muted-foreground text-center">
             {formattedEvent.description}
           </div>
-          <div>
+          <div className="mt-4">
             <AddToGoogleCalendar event={formattedEvent} />
           </div>
         </div>

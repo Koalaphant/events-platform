@@ -1,5 +1,6 @@
 "use client";
 
+import { FiClock, FiMapPin, FiTag, FiFileText } from "react-icons/fi";
 import { userOrderExists } from "@/app/actions/orders";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { formatCurrency } from "@/lib/formatters";
+import { formatCurrency, formatEventTime } from "@/lib/formatters";
 import {
   Elements,
   LinkAuthenticationElement,
@@ -29,6 +30,12 @@ type CheckoutFormProps = {
     name: string;
     priceInPence: number;
     description: string;
+    location: string;
+    startTime: Date;
+    endTime: Date;
+    isAvailable: boolean;
+    createdAt: Date;
+    updatedAt: Date;
   };
   clientSecret: string;
 };
@@ -40,8 +47,8 @@ const stripePromise = loadStripe(
 export function CheckoutForm({ event, clientSecret }: CheckoutFormProps) {
   return (
     <div className="max-w-5xl w-full mx-auto space-y-8">
-      <div className="flex gap-4 items-center">
-        <div className="aspect-video flex-shrink-0 w-1/3 relative">
+      <div className="flex flex-col md:flex-row gap-4 items-center">
+        <div className="aspect-video w-full md:w-1/3 relative">
           <Image
             src={event.imagePath}
             alt={event.name}
@@ -49,14 +56,29 @@ export function CheckoutForm({ event, clientSecret }: CheckoutFormProps) {
             className="object-cover"
           />
         </div>
-        <div>
-          <div className="text-lg">
-            {formatCurrency(event.priceInPence / 100)}
-          </div>
-          <h1 className="text-2xl font-bold">{event.name}</h1>
-          <div className="line-clamp-3 text-muted-foreground">
-            {event.description}
-          </div>
+        <div className="w-full">
+          <h1 className="text-2xl font-bold mb-4">{event.name}</h1>
+          <ul className="space-y-1">
+            <li className="flex items-center">
+              <FiClock className="mr-2 text-primary" />
+              {formatEventTime(event.startTime.toString())} -{" "}
+              {formatEventTime(event.endTime.toString())}
+            </li>
+            <li className="flex items-center">
+              <FiMapPin className="mr-2 text-primary" />
+              {event.location}
+            </li>
+            <li className="flex items-center">
+              <FiFileText className="mr-2 text-primary" />
+              <div className="line-clamp-3">{event.description}</div>
+            </li>
+            <li className="flex items-center">
+              <FiTag className="mr-2 text-primary" />
+              <div className="text-lg">
+                {formatCurrency(event.priceInPence / 100)}
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
       <Elements options={{ clientSecret }} stripe={stripePromise}>

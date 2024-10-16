@@ -27,3 +27,12 @@ export function formatEventDate(isoDate: string): string {
     minute: "2-digit",
   });
 }
+
+export function formatEventTime(isoDate: string): string {
+  const date = new Date(isoDate);
+  return date.toLocaleString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}

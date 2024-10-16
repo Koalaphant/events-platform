@@ -2,6 +2,8 @@ import db from "@/db/db";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import FormRegister from "@/components/FormRegister";
+import { FiClock, FiMapPin, FiTag, FiFileText } from "react-icons/fi";
+import { formatCurrency, formatEventTime } from "@/lib/formatters";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const event = await db.event.findUnique({
@@ -17,33 +19,47 @@ export default async function Page({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="">
-      <h1 className="text-3xl font-bold text-center">
-        Register your place for {formattedEvent.name}
-      </h1>
-      <div className="flex flex-col lg:flex-row gap-4 mt-6">
-        <div className="lg:w-1/2 w-full">
+    <div className="max-w-5xl w-full mx-auto space-y-8">
+      <div className="flex flex-col md:flex-row gap-4 items-center">
+        <div className="aspect-video w-full md:w-1/3 relative">
           <Image
-            src={formattedEvent.imagePath}
-            alt={formattedEvent.name}
-            layout="responsive"
-            width={1000}
-            height={500}
-            className="w-full"
+            src={event.imagePath}
+            alt={event.name}
+            fill
+            className="object-cover"
           />
-          <div className="bg-primary p-4 rounded-md mt-4">
-            <p className="text-center text-white text-1xl leading-relaxed">
-              {formattedEvent.description}
-            </p>
-          </div>
         </div>
-        <div className="lg:w-1/2 w-full">
-          <p className="text-center text-muted-foreground">
-            You are registering for a free event. Please enter your email
-            address to confirm your place.
-          </p>
-          <FormRegister event={formattedEvent} />
+        <div className="w-full">
+          <h1 className="text-2xl font-bold mb-4">{event.name}</h1>
+          <ul className="space-y-1">
+            <li className="flex items-center">
+              <FiClock className="mr-2 text-primary" />
+              {formatEventTime(event.startTime.toString())} -{" "}
+              {formatEventTime(event.endTime.toString())}
+            </li>
+            <li className="flex items-center">
+              <FiMapPin className="mr-2 text-primary" />
+              {event.location}
+            </li>
+            <li className="flex items-center">
+              <FiFileText className="mr-2 text-primary" />
+              <div className="line-clamp-3">{event.description}</div>
+            </li>
+            <li className="flex items-center">
+              <FiTag className="mr-2 text-primary" />
+              <div className="text-lg">
+                {formatCurrency(event.priceInPence / 100)}
+              </div>
+            </li>
+          </ul>
         </div>
+      </div>
+      <div className="w-full">
+        <p className="text-center text-muted-foreground">
+          You are registering for a free event. Please enter your email address
+          to confirm your place.
+        </p>
+        <FormRegister event={formattedEvent} />
       </div>
     </div>
   );
