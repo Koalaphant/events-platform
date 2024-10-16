@@ -54,8 +54,6 @@ async function EventsTable() {
     return <p>No events found</p>;
   }
 
-  console.log(typeof events[0].eventDate);
-
   return (
     <Table>
       <TableHeader>
@@ -89,7 +87,11 @@ async function EventsTable() {
               )}
             </TableCell>
             <TableCell>{event.name}</TableCell>
-            <TableCell>{formatCurrency(event.priceInPence / 100)} </TableCell>
+            <TableCell>
+              {event.priceInPence === 0
+                ? "Free"
+                : formatCurrency(event.priceInPence / 100)}
+            </TableCell>
             <TableCell>{event._count.orders}</TableCell>
             <TableCell>
               {formatEventDate(event.eventDate.toISOString())}

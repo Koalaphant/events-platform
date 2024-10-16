@@ -5,6 +5,9 @@ const CURRENCY_FORMATTER = new Intl.NumberFormat("en-GB", {
 });
 
 export function formatCurrency(amount: number) {
+  if (amount === 0) {
+    return "Free";
+  }
   return CURRENCY_FORMATTER.format(amount);
 }
 

@@ -39,9 +39,15 @@ export function EventCard({
         <p className="line-clamp-4">{description}</p>
       </CardContent>
       <CardFooter>
-        <Button asChild size="lg" className="w-full">
-          <Link href={`/events/${id}/purchase`}>Purchase</Link>
-        </Button>
+        {priceInPence === 0 ? (
+          <Button asChild size="lg" className="w-full">
+            <Link href={`/events/${id}/register`}>Free</Link>
+          </Button>
+        ) : (
+          <Button asChild size="lg" className="w-full">
+            <Link href={`/events/${id}/purchase`}>Purchase</Link>
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

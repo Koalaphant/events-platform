@@ -14,7 +14,9 @@ export default function Layout({
         <NavLink href="/events">Events</NavLink>
         <NavLink href="/orders">Orders</NavLink>
       </Nav>
-      <div className="container m-6">{children}</div>
+      <div className="px-4 sm:mx-6 max-w-screen-lg lg:mx-auto my-6">
+        {children}
+      </div>
     </>
   );
 }
