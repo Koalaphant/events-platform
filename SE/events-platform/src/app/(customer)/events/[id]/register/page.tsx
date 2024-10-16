@@ -1,9 +1,6 @@
 import db from "@/db/db";
 import { notFound } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
-import freeRegister from "@/actions/free-register";
 import FormRegister from "@/components/FormRegister";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -12,6 +9,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   });
 
   if (event == null) return notFound();
+
   return (
     <div className="">
       <h1 className="text-3xl font-bold text-center">
@@ -44,5 +42,3 @@ export default async function Page({ params }: { params: { id: string } }) {
     </div>
   );
 }
-
-
