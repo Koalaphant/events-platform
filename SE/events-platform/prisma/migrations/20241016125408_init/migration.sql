@@ -4,6 +4,7 @@ CREATE TABLE "Event" (
     "name" TEXT NOT NULL,
     "priceInPence" INTEGER NOT NULL,
     "imagePath" TEXT NOT NULL,
+    "location" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "isAvailable" BOOLEAN NOT NULL DEFAULT true,
     "eventDate" DATETIME NOT NULL,

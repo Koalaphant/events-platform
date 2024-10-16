@@ -54,7 +54,7 @@ export default async function freeRegister(
 
   const order = await db.order.findFirst({
     where: { eventId, user: { email } },
-    orderBy: { createdAt: "desc" }, // Fetch the latest order
+    orderBy: { createdAt: "desc" },
   });
 
   if (!order) {
@@ -81,5 +81,7 @@ export default async function freeRegister(
     ),
   });
 
-  return { message: "You have successfully registered for the event!" };
+  return {
+    message: "You have successfully registered for the event!",
+  };
 }

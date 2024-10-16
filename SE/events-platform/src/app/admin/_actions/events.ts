@@ -15,8 +15,10 @@ const addSchema = z.object({
   name: z.string().min(1),
   priceInPence: z.coerce.number().int().min(0),
   description: z.string().min(1),
+  location: z.string().min(1),
   image: imageSchema.refine((file) => file.size > 0, "Required"),
-  eventDate: z.coerce.date().transform((date) => date.toISOString()),
+  startTime: z.coerce.date().transform((date) => date.toISOString()),
+  endTime: z.coerce.date().transform((date) => date.toISOString()),
 });
 
 export async function addEvent(prevState: unknown, formData: FormData) {
@@ -40,8 +42,10 @@ export async function addEvent(prevState: unknown, formData: FormData) {
       name: data.name,
       priceInPence: data.priceInPence,
       description: data.description,
+      location: data.location,
       imagePath,
-      eventDate: data.eventDate,
+      startTime: data.startTime,
+      endTime: data.endTime,
     },
   });
 
@@ -110,8 +114,10 @@ export async function updateEvent(
       name: data.name,
       priceInPence: data.priceInPence,
       description: data.description,
+      location: data.location,
       imagePath,
-      eventDate: data.eventDate,
+      startTime: data.startTime,
+      endTime: data.endTime,
     },
   });
 

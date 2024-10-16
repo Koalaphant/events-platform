@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import db from "@/db/db";
 import { CheckCircle2, MoreVertical, XCircleIcon } from "lucide-react";
-import { formatCurrency, formatEventDate } from "@/lib/formatters";
+import { formatCurrency } from "@/lib/formatters";
 import { DropdownMenu, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import {
   DropdownMenuContent,
@@ -44,8 +44,9 @@ async function EventsTable() {
       name: true,
       priceInPence: true,
       isAvailable: true,
+      startTime: true,
+      endTime: true,
       _count: { select: { orders: true } },
-      eventDate: true,
     },
     orderBy: { name: "asc" },
   });
@@ -64,7 +65,8 @@ async function EventsTable() {
           <TableHead>Name</TableHead>
           <TableHead>Price</TableHead>
           <TableHead>Orders</TableHead>
-          <TableHead>Event Date</TableHead>
+          <TableHead>Start Time</TableHead>
+          <TableHead>End Time</TableHead>
           <TableHead className="w-0">
             <span className="sr-only">Actions</span>
           </TableHead>
@@ -92,10 +94,9 @@ async function EventsTable() {
                 ? "Free"
                 : formatCurrency(event.priceInPence / 100)}
             </TableCell>
-            <TableCell>{event._count.orders}</TableCell>
-            <TableCell>
-              {formatEventDate(event.eventDate.toISOString())}
-            </TableCell>
+            <TableCell>{event._count?.orders}</TableCell>
+            <TableCell>{new Date(event.startTime).toLocaleString()}</TableCell>
+            <TableCell>{new Date(event.endTime).toLocaleString()}</TableCell>
             <TableCell>
               <DropdownMenu>
                 <DropdownMenuTrigger>
@@ -113,7 +114,7 @@ async function EventsTable() {
                   <DropdownMenuSeparator />
                   <DeleteDropdownItem
                     id={event.id}
-                    disabled={event._count.orders > 0}
+                    disabled={event._count?.orders > 0}
                   />
                 </DropdownMenuContent>
               </DropdownMenu>

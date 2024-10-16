@@ -19,6 +19,13 @@ export function EventForm({ event }: { event?: Event | null }) {
   const [priceInPence, setPriceInPence] = useState<number | undefined>(
     event?.priceInPence || 0
   );
+  const [startTime, setStartTime] = useState<string>(
+    event ? new Date(event.startTime).toISOString().slice(0, 16) : ""
+  );
+  const [endTime, setEndTime] = useState<string>(
+    event ? new Date(event.endTime).toISOString().slice(0, 16) : ""
+  );
+
   return (
     <form action={action} className="space-y-8">
       <div className="space-y-2">
@@ -29,22 +36,48 @@ export function EventForm({ event }: { event?: Event | null }) {
           name="name"
           required
           defaultValue={event?.name || ""}
-        ></Input>
+        />
         {error.name && <div className="text-destructive">{error.name}</div>}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="eventDate">Event Date</Label>
+        <Label htmlFor="location">Location</Label>
+        <Input
+          type="text"
+          id="location"
+          name="location"
+          required
+          defaultValue={event?.location || ""}
+        />
+        {error.location && (
+          <div className="text-destructive">{error.location}</div>
+        )}
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="startTime">Start Time</Label>
         <Input
           type="datetime-local"
-          id="eventDate"
-          name="eventDate"
+          id="startTime"
+          name="startTime"
           required
-          defaultValue={
-            event ? new Date(event.eventDate).toISOString().slice(0, 16) : ""
-          }
+          value={startTime}
+          onChange={(e) => setStartTime(e.target.value)}
         />
-        {error.eventDate && (
-          <div className="text-destructive">{error.eventDate}</div>
+        {error.startTime && (
+          <div className="text-destructive">{error.startTime}</div>
+        )}
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="endTime">End Time</Label>
+        <Input
+          type="datetime-local"
+          id="endTime"
+          name="endTime"
+          required
+          value={endTime}
+          onChange={(e) => setEndTime(e.target.value)}
+        />
+        {error.endTime && (
+          <div className="text-destructive">{error.endTime}</div>
         )}
       </div>
       <div className="space-y-2">
@@ -71,16 +104,11 @@ export function EventForm({ event }: { event?: Event | null }) {
           name="description"
           required
           defaultValue={event?.description}
-        ></Textarea>
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="image">Image</Label>
-        <Input
-          type="file"
-          id="image"
-          name="image"
-          required={event == null}
-        ></Input>
+        <Input type="file" id="image" name="image" required={event == null} />
         {event != null && (
           <Image
             src={event.imagePath}

@@ -13,11 +13,13 @@ datasource db {
 model Event {
   id                String      @id     @default(uuid())
   name              String
+  description       String
+  location          String
+  startTime         DateTime
+  endTime           DateTime
   priceInPence      Int
   imagePath         String
-  description       String
   isAvailable       Boolean     @default(true)
-  eventDate         DateTime
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
   orders            Order[]
