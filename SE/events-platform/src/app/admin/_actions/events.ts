@@ -1,10 +1,20 @@
 "use server";
 
 import { z } from "zod";
-import fs from "fs/promises";
+import { put } from "@vercel/blob";
 import db from "@/db/db";
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+
+interface EventData {
+  name: string;
+  priceInPence: number;
+  description: string;
+  location: string;
+  image: File;
+  startTime: string;
+  endTime: string;
+}
 
 const fileSchema = z.instanceof(File, { message: "Required" });
 const imageSchema = fileSchema.refine(
@@ -21,20 +31,26 @@ const addSchema = z.object({
   endTime: z.coerce.date().transform((date) => date.toISOString()),
 });
 
+async function uploadImageToVercelBlob(
+  imageFile: File
+): Promise<{ url: string }> {
+  const filename = `${crypto.randomUUID()}-${imageFile.name}`;
+  const blob = await put(filename, imageFile.stream(), {
+    access: "public",
+    token: process.env.BLOB_READ_WRITE_TOKEN,
+  });
+  return { url: blob.url };
+}
+
 export async function addEvent(prevState: unknown, formData: FormData) {
   const result = addSchema.safeParse(Object.fromEntries(formData.entries()));
-  if (result.success === false) {
+  if (!result.success) {
     return result.error.formErrors.fieldErrors;
   }
 
-  const data = result.data;
+  const data: EventData = result.data;
 
-  fs.mkdir("public/images", { recursive: true });
-  const imagePath = `/images/${crypto.randomUUID()}-${data.image.name}`;
-  await fs.writeFile(
-    `public${imagePath}`,
-    Buffer.from(await data.image.arrayBuffer())
-  );
+  const blob = await uploadImageToVercelBlob(data.image);
 
   await db.event.create({
     data: {
@@ -43,7 +59,7 @@ export async function addEvent(prevState: unknown, formData: FormData) {
       priceInPence: data.priceInPence,
       description: data.description,
       location: data.location,
-      imagePath,
+      imagePath: blob.url, // Store the blob URL
       startTime: data.startTime,
       endTime: data.endTime,
     },
@@ -70,9 +86,7 @@ export async function toggleEventAvailability(
 export async function deleteEvent(id: string) {
   const event = await db.event.delete({ where: { id } });
 
-  if (event == null) return notFound();
-
-  await fs.unlink(`public${event.imagePath}`);
+  if (!event) return notFound();
 
   revalidatePath("/");
   revalidatePath("/events");
@@ -88,26 +102,21 @@ export async function updateEvent(
   formData: FormData
 ) {
   const result = editSchema.safeParse(Object.fromEntries(formData.entries()));
-  if (result.success === false) {
+  if (!result.success) {
     return result.error.formErrors.fieldErrors;
   }
 
-  const data = result.data;
+  const data: Partial<EventData> = result.data;
   const event = await db.event.findUnique({ where: { id } });
 
-  if (event == null) return notFound();
+  if (!event) return notFound();
 
   let imagePath = event.imagePath;
 
-  if (data.image != null && data.image.size > 0) {
-    await fs.unlink(`public${event.imagePath}`);
-    imagePath = `/images/${crypto.randomUUID()}-${data.image.name}`;
-    await fs.writeFile(
-      `public${imagePath}`,
-      Buffer.from(await data.image.arrayBuffer())
-    );
+  if (data.image && data.image.size > 0) {
+    const blob = await uploadImageToVercelBlob(data.image);
+    imagePath = blob.url;
   }
-
   await db.event.update({
     where: { id },
     data: {
