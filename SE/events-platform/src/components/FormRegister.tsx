@@ -35,7 +35,6 @@ export default function FormRegister({ event }: { event: Event }) {
             event={{
               name: event.name,
               startTime: event.startTime,
-              endTime: event.endTime,
               location: event.location,
               description: event.description,
             }}
