@@ -1,4 +1,4 @@
-import { formatCurrency } from "@/lib/formatters";
+import { formatCurrency, formatEventDate } from "@/lib/formatters";
 import {
   Card,
   CardContent,
@@ -17,6 +17,7 @@ type EventCardProps = {
   priceInPence: number;
   description: string;
   imagePath: string;
+  startTime: Date;
 };
 
 export function EventCard({
@@ -25,6 +26,7 @@ export function EventCard({
   priceInPence,
   description,
   imagePath,
+  startTime,
 }: EventCardProps) {
   return (
     <Card className="flex overflow-hidden flex-col">
@@ -33,10 +35,15 @@ export function EventCard({
       </div>
       <CardHeader>
         <CardTitle>{name}</CardTitle>
-        <CardDescription>{formatCurrency(priceInPence / 100)}</CardDescription>
+        <CardDescription>
+          {formatEventDate(new Date(startTime).toISOString())}
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex-grow">
         <p className="line-clamp-4">{description}</p>
+      </CardContent>
+      <CardContent className="flex-grow">
+        {formatCurrency(priceInPence / 100)}
       </CardContent>
       <CardFooter>
         {priceInPence === 0 ? (

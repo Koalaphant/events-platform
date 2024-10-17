@@ -1,5 +1,5 @@
 import db from "@/db/db";
-import { formatCurrency, formatEventTime } from "@/lib/formatters";
+import { formatCurrency, formatEventDate } from "@/lib/formatters";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Stripe from "stripe";
@@ -36,12 +36,16 @@ export default async function SuccessPage({
 
   return (
     <div className="max-w-5xl w-full mx-auto">
-      <h1 className="text-4xl font-bold text-center mb-20">
-        {isSuccess ? `You're going to ${event.name}!` : "Failed to purchase"}
+      <h1 className="text-5xl font-bold text-center">
+        {isSuccess ? `Your event details` : "Failed to purchase"}
       </h1>
+      <p className="text-lg font-light text-center mt-2 mb-20">
+        You paid {formatCurrency(formattedEvent.priceInPence / 100)} for the
+        event.
+      </p>
 
-      <div className="flex justify-between w-full">
-        <div className="w-1/2">
+      <div className="flex flex-col md:flex-row justify-between w-full md:space-y-0">
+        <div className="w-full md:w-1/2">
           <div className="relative w-full aspect-video">
             <Image
               src={formattedEvent.imagePath}
@@ -51,21 +55,17 @@ export default async function SuccessPage({
             />
           </div>
         </div>
-        <div className="w-1/2 flex flex-col items-center justify-center">
-          <div className="text-lg">
-            {formatCurrency(formattedEvent.priceInPence / 100)}
-          </div>
-          <h1 className="text-2xl font-bold text-center">
+        <div className="w-full md:w-1/2 flex flex-col items-center justify-center bg-primary p-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-center text-white mb-4">
             {formattedEvent.name}
           </h1>
-          <div className="mb-3">
-            {formatEventTime(event.startTime.toString())} -{" "}
-            {formatEventTime(event.endTime.toString())}
+          <div className="text-white text-center">
+            {formatEventDate(event.startTime.toString())}
           </div>
-          <div className="line-clamp-3 text-muted-foreground text-center">
+          <div className="line-clamp-3 text-white text-center mb-4">
             {formattedEvent.description}
           </div>
-          <div className="mt-4">
+          <div>
             <AddToGoogleCalendar event={formattedEvent} />
           </div>
         </div>

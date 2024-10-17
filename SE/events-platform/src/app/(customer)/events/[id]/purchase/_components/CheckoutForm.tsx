@@ -61,8 +61,7 @@ export function CheckoutForm({ event, clientSecret }: CheckoutFormProps) {
           <ul className="space-y-1">
             <li className="flex items-center">
               <FiClock className="mr-2 text-primary" />
-              {formatEventTime(event.startTime.toString())} -{" "}
-              {formatEventTime(event.endTime.toString())}
+              {formatEventTime(event.startTime.toString())}
             </li>
             <li className="flex items-center">
               <FiMapPin className="mr-2 text-primary" />

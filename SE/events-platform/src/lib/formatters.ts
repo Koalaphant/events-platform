@@ -1,7 +1,7 @@
 const CURRENCY_FORMATTER = new Intl.NumberFormat("en-GB", {
   style: "currency",
   currency: "GBP",
-  minimumFractionDigits: 0,
+  minimumFractionDigits: 2,
 });
 
 export function formatCurrency(amount: number) {
@@ -33,6 +33,6 @@ export function formatEventTime(isoDate: string): string {
   return date.toLocaleString("en-GB", {
     hour: "2-digit",
     minute: "2-digit",
-    hour12: true,
+    hour12: false,
   });
 }
