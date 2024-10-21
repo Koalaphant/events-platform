@@ -17,7 +17,7 @@ const AddToGoogleCalendar: React.FC<EventProps> = ({ event }) => {
 
   return (
     <a href={googleCalendarLink} target="_blank" rel="noopener noreferrer">
-      <Button className="bg-white text-primary py-2 px-4">
+      <Button className="bg-primary text-white py-2 px-4 hover:animate-pulse">
         Add to Google Calendar <span className="text-sm ml-3">🗓️</span>
       </Button>
     </a>

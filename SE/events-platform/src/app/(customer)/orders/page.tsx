@@ -18,7 +18,10 @@ export default function MyOrdersPage() {
   const [data, action] = useFormState(emailOrderHistory, {});
 
   return (
-    <form action={action} className="max-2-xl mx-auto">
+    <form
+      action={action}
+      className="max-2-xl mx-auto px-4 mt-12 sm:mx-6 max-w-7xl lg:mx-auto"
+    >
       <Card>
         <CardHeader>
           <CardTitle>My Orders</CardTitle>

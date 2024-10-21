@@ -46,8 +46,8 @@ const stripePromise = loadStripe(
 
 export function CheckoutForm({ event, clientSecret }: CheckoutFormProps) {
   return (
-    <div className="max-w-5xl w-full mx-auto space-y-8">
-      <div className="flex flex-col md:flex-row gap-4 items-center">
+    <div className="max-w-5xl w-full md:mx-auto space-y-8 md:mt-20 mx-0">
+      <div className="flex flex-col md:flex-row gap-4 items-center m-0 md:m-4 lg:m-0">
         <div className="aspect-video w-full md:w-1/3 relative">
           <Image
             src={event.imagePath}
@@ -57,19 +57,21 @@ export function CheckoutForm({ event, clientSecret }: CheckoutFormProps) {
           />
         </div>
         <div className="w-full">
-          <h1 className="text-2xl font-bold mb-4">{event.name}</h1>
-          <ul className="space-y-1">
+          <h1 className="text-2xl font-bold mb-4 mx-4 md:mx-0">{event.name}</h1>
+          <ul className="space-y-1 m-4 md:m-0">
             <li className="flex items-center">
               <FiClock className="mr-2 text-primary" />
-              {formatEventTime(event.startTime.toString())}
+              <div className="text-lg">
+                {formatEventTime(event.startTime.toString())}
+              </div>
             </li>
             <li className="flex items-center">
               <FiMapPin className="mr-2 text-primary" />
-              {event.location}
+              <div className="text-lg">{event.location}</div>
             </li>
             <li className="flex items-center">
               <FiFileText className="mr-2 text-primary" />
-              <div className="line-clamp-3">{event.description}</div>
+              <div className="line-clamp-3 text-lg">{event.description}</div>
             </li>
             <li className="flex items-center">
               <FiTag className="mr-2 text-primary" />
@@ -80,9 +82,11 @@ export function CheckoutForm({ event, clientSecret }: CheckoutFormProps) {
           </ul>
         </div>
       </div>
-      <Elements options={{ clientSecret }} stripe={stripePromise}>
-        <Form priceInPence={event.priceInPence} eventId={event.id} />
-      </Elements>
+      <div className="mx-4 lg:mx-0">
+        <Elements options={{ clientSecret }} stripe={stripePromise}>
+          <Form priceInPence={event.priceInPence} eventId={event.id} />
+        </Elements>
+      </div>
     </div>
   );
 }

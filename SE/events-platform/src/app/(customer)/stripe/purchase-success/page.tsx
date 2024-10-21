@@ -35,7 +35,7 @@ export default async function SuccessPage({
   };
 
   return (
-    <div className="max-w-5xl w-full mx-auto">
+    <div className="max-w-5xl w-full mx-auto mt-20">
       <h1 className="text-5xl font-bold text-center">
         {isSuccess ? `Your event details` : "Failed to purchase"}
       </h1>
@@ -55,7 +55,7 @@ export default async function SuccessPage({
             />
           </div>
         </div>
-        <div className="w-full md:w-1/2 flex flex-col items-center justify-center bg-primary p-4">
+        <div className="w-full md:w-1/2 flex flex-col items-center justify-center bg-primary p-8">
           <h1 className="text-4xl md:text-5xl font-bold text-center text-white mb-4">
             {formattedEvent.name}
           </h1>

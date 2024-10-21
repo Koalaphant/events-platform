@@ -18,18 +18,34 @@ export default function FormRegister({ event }: { event: Event }) {
   const [data, action] = useFormState(freeRegister, {});
 
   return (
-    <div>
-      <form action={action} className="flex flex-col gap-2 mt-4">
+    <div className="w-full">
+      {" "}
+      {/* Ensure full width but contained */}
+      <form
+        action={action}
+        className="flex flex-col gap-2 mt-4 w-full max-w-md mx-auto"
+      >
+        {" "}
+        {/* Max width with centering */}
         <Input type="hidden" name="eventId" value={event.id} />
-        <Input type="email" name="email" placeholder="Email" required />
+        <Input
+          type="email"
+          name="email"
+          placeholder="Email"
+          required
+          className="w-full"
+        />{" "}
+        {/* Full width input */}
         {data.error && <div className="text-destructive">{data.error}</div>}
         {data.message ? (
           <p className="text-center">{data.message}</p>
         ) : (
-          <Button type="submit">Register</Button>
+          <Button type="submit" className="w-full">
+            Register
+          </Button>
         )}
       </form>
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-4">
         {data.message && (
           <AddToGoogleCalendar
             event={{
