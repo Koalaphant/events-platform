@@ -5,13 +5,13 @@ import Link from "next/link";
 export function Hero() {
   return (
     <div
-      className="h-[250px] md:h-[450px] mb-12 bg-cover bg-center relative flex flex-col justify-center items-center"
+      className="h-[250px] md:h-[450px] mb-12 bg-cover bg-center relative flex flex-col justify-center items-center shadow-xl"
       style={{ backgroundImage: "url('/events-hero-image.jpg')" }}
     >
-      <div className="absolute inset-0 bg-orange-700 opacity-60"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-orange-700 to-transparent"></div>
+      <div className="absolute inset-0 bg-blue-400 opacity-60"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-900 to-transparent"></div>
       <div className="relative flex flex-col items-center justify-center h-full mx-8 lg:mx-0">
-        <p className="text-white text-3xl md:text-5xl mb-4 text-center">
+        <p className="text-white w-3/4 2xl:w-full text-4xl md:text-6xl mb-4 md:mb-8 text-center">
           Unforgettable experiences await
         </p>
         <Button
