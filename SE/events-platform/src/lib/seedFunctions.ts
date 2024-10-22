@@ -1,14 +1,12 @@
 import { put } from "@vercel/blob";
 import db from "@/db/db";
 
-// Function to clear all tables
 export async function clearDatabase() {
   await db.order.deleteMany({});
   await db.user.deleteMany({});
   await db.event.deleteMany({});
 }
 
-// Ticketmaster API function
 export async function fetchEventsFromTicketmaster() {
   const apiKey = process.env.TICKETMASTER_API_KEY;
   const response = await fetch(
@@ -17,28 +15,22 @@ export async function fetchEventsFromTicketmaster() {
 
   const data = await response.json();
 
-  // Check if events exist
   if (!data._embedded || !data._embedded.events) {
-    return []; // Return an empty array if no events found
+    return [];
   }
 
-  // Use a Map to track unique event names
   const uniqueEvents = new Map();
 
   for (const event of data._embedded.events) {
-    // Add the event to the Map if the name is not already present
     if (!uniqueEvents.has(event.name)) {
       uniqueEvents.set(event.name, event);
     }
   }
 
-  // Convert the Map back to an array and return the unique events
   return Array.from(uniqueEvents.values());
 }
 
-// Seeding function
 export async function seedEventsFromTicketmaster() {
-  // Clear all tables before starting
   await clearDatabase();
 
   const events = await fetchEventsFromTicketmaster();
@@ -66,10 +58,8 @@ export async function seedEventsFromTicketmaster() {
       )) as File,
     };
 
-    // Upload image using the existing upload function
     const blob = await uploadImageToVercelBlob(eventData.image);
 
-    // Save event to DB
     const newEvent = await db.event.create({
       data: {
         name: eventData.name,
@@ -83,14 +73,12 @@ export async function seedEventsFromTicketmaster() {
       },
     });
 
-    // Create a new user for each event
     const newUser = await db.user.create({
       data: {
-        email: `user${crypto.randomUUID()}@example.com`, // Random user email
+        email: `user${crypto.randomUUID()}@example.com`,
       },
     });
 
-    // Create an order for that user associated with the event
     await db.order.create({
       data: {
         pricePaidInPence: newEvent.priceInPence,
@@ -101,7 +89,6 @@ export async function seedEventsFromTicketmaster() {
   }
 }
 
-// Function to upload images using Vercel Blob
 export async function uploadImageToVercelBlob(
   imageFile: File
 ): Promise<{ url: string }> {
