@@ -18,29 +18,33 @@ export default function MyOrdersPage() {
   const [data, action] = useFormState(emailOrderHistory, {});
 
   return (
-    <form
-      action={action}
-      className="max-2-xl mx-auto px-4 mt-12 sm:mx-6 max-w-7xl lg:mx-auto"
-    >
-      <Card>
-        <CardHeader>
-          <CardTitle>My Orders</CardTitle>
-          <CardDescription>
-            Enter your email below and we will view your order history
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <Label>Email</Label>
-            <Input type="email" required name="email" id="email" />
-            {data.error && <div className="text-destructive">{data.error}</div>}
-          </div>
-        </CardContent>
-        <CardFooter>
-          {data.message ? <p>{data.message}</p> : <SubmitButton />}
-        </CardFooter>
-      </Card>
-    </form>
+    <div>
+      <form
+        action={action}
+        className="max-2-xl mx-auto px-4 mt-12 sm:mx-6 max-w-7xl lg:mx-auto"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>My Orders</CardTitle>
+            <CardDescription>
+              Enter your email below and we will view your order history
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <Label>Email</Label>
+              <Input type="email" required name="email" id="email" />
+              {data.error && (
+                <div className="text-destructive">{data.error}</div>
+              )}
+            </div>
+          </CardContent>
+          <CardFooter>
+            {data.message ? <p>{data.message}</p> : <SubmitButton />}
+          </CardFooter>
+        </Card>
+      </form>
+    </div>
   );
 
   function SubmitButton() {
