@@ -1,6 +1,6 @@
 "use client";
 
-import { FiClock, FiMapPin, FiTag, FiFileText } from "react-icons/fi";
+import { FiClock, FiMapPin, FiTag } from "react-icons/fi";
 import { userOrderExists } from "@/app/actions/orders";
 import { Button } from "@/components/ui/button";
 import {
@@ -58,29 +58,29 @@ export function CheckoutForm({ event, clientSecret }: CheckoutFormProps) {
         </div>
         <div className="w-full">
           <h1 className="text-2xl font-bold mb-4 mx-4 md:mx-0">{event.name}</h1>
-          <ul className="space-y-1 m-4 md:m-0">
+          <ul className="space-y-1 mx-4 md:m-0">
             <li className="flex items-center">
               <FiClock className="mr-2 text-primary" />
-              <div className="text-lg">
+              <div className="text-md">
                 {formatEventTime(event.startTime.toString())}
               </div>
             </li>
             <li className="flex items-center">
               <FiMapPin className="mr-2 text-primary" />
-              <div className="text-lg">{event.location}</div>
+              <div className="text-md">{event.location}</div>
             </li>
-            <li className="flex items-center">
-              <FiFileText className="mr-2 text-primary" />
-              <div className="line-clamp-3 text-lg">{event.description}</div>
-            </li>
+
             <li className="flex items-center">
               <FiTag className="mr-2 text-primary" />
-              <div className="text-lg">
+              <div className="text-md">
                 {formatCurrency(event.priceInPence / 100)}
               </div>
             </li>
           </ul>
         </div>
+      </div>
+      <div className="mx-4 lg:mx-0">
+        <p className="text-lg">{event.description}</p>
       </div>
       <div className="mx-4 lg:mx-0">
         <Elements options={{ clientSecret }} stripe={stripePromise}>
