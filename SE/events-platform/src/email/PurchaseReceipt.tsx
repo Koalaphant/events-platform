@@ -13,6 +13,8 @@ type PurchaseReceiptEmailProps = {
     name: string;
     imagePath: string;
     description: string;
+    startTime: Date;
+    location: string;
   };
   order: { id: string; createdAt: Date; pricePaidInPence: number };
 };
@@ -22,6 +24,8 @@ PurchaseReceiptEmail.PreviewProps = {
     name: "Event Name",
     imagePath: "/images/andrew.JPG",
     description: "A description of the event",
+    startTime: new Date(),
+    location: "A location",
   },
   order: {
     id: crypto.randomUUID(),

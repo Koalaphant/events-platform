@@ -1,9 +1,15 @@
-import { formatCurrency } from "@/lib/formatters";
+import { formatCurrency, formatEventDate } from "@/lib/formatters";
 import { Section, Row, Column, Text, Img } from "@react-email/components";
 
 type OrderInformationProps = {
   order: { id: string; createdAt: Date; pricePaidInPence: number };
-  event: { imagePath: string; name: string; description: string };
+  event: {
+    imagePath: string;
+    name: string;
+    description: string;
+    startTime: Date;
+    location: string;
+  };
 };
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -44,6 +50,10 @@ export function OrderInformation({ order, event }: OrderInformationProps) {
         <Row className="mt-8">
           <Column className="align-bottom">
             <Text className="text-lg font-bold m-0 mr-4">{event.name}</Text>
+            <Text className="m-0 mr-4 font-bold">{event.location}</Text>
+            <Text className="m-0 mr-4">
+              {formatEventDate(event.startTime.toString())}
+            </Text>
             <Text className="m-0 mr-4">{event.description}</Text>
           </Column>
         </Row>

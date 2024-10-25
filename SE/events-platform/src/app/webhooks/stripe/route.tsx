@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     });
 
     await resend.emails.send({
-      from: `Splend EventSupport <${process.env.SENDER_EMAIL}>`,
+      from: `Splend Event Support <${process.env.SENDER_EMAIL}>`,
       to: email,
       subject: "Your ticket is confirmed",
       react: <PurchaseReceiptEmail order={order} event={event} />,
