@@ -34,6 +34,7 @@ export async function emailOrderHistory(
               imagePath: true,
               description: true,
               startTime: true,
+              location: true,
             },
           },
         },
