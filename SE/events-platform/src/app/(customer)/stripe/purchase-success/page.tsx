@@ -33,9 +33,10 @@ export default async function SuccessPage({
     startTime: event.startTime.toISOString(),
     endTime: event.endTime.toISOString(),
   };
+  console.log(formattedEvent);
 
   return (
-    <div className="max-w-5xl w-full mx-auto mt-20">
+    <div className="max-w-3xl w-full mx-auto mt-20">
       <h1 className="text-5xl font-bold text-center">
         {isSuccess ? `Your event details` : "Failed to purchase"}
       </h1>
@@ -44,29 +45,28 @@ export default async function SuccessPage({
         event.
       </p>
 
-      <div className="flex flex-col md:flex-row justify-between w-full md:space-y-0">
-        <div className="w-full md:w-1/2">
-          <div className="relative w-full aspect-video">
+      <div>
+        <div className="mx-4 border-2 border-primary rounded-lg">
+          <div className="flex flex-col justify-center items-center text-white bg-primary px-6 py-8 gap-2">
+            <h1 className="text-3xl font-bold text-center">
+              {formattedEvent.name}
+            </h1>
+            <p className="text-center">
+              {formatEventDate(event.startTime.toString())}
+            </p>
+            <p>{formattedEvent.location}</p>
+            <p className="text-center">{formattedEvent.description}</p>
+            <div className="flex gap-4 bg-white rounded-lg mt-4 p-1">
+              <AddToGoogleCalendar event={formattedEvent} />
+            </div>
+          </div>
+          <div className="relative w-full" style={{ aspectRatio: "16 / 9" }}>
             <Image
               src={formattedEvent.imagePath}
               alt={formattedEvent.name}
               fill
               className="object-cover"
             />
-          </div>
-        </div>
-        <div className="w-full md:w-1/2 flex flex-col items-center justify-center bg-primary p-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-center text-white mb-4">
-            {formattedEvent.name}
-          </h1>
-          <div className="text-white text-center">
-            {formatEventDate(event.startTime.toString())}
-          </div>
-          <div className="line-clamp-3 text-white text-center mb-4">
-            {formattedEvent.description}
-          </div>
-          <div>
-            <AddToGoogleCalendar event={formattedEvent} />
           </div>
         </div>
       </div>

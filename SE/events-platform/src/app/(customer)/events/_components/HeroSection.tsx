@@ -10,9 +10,9 @@ export function Hero() {
     >
       <div className="absolute inset-0 bg-blue-400 opacity-60"></div>
       <div className="absolute inset-0 bg-gradient-to-b from-blue-900 to-transparent"></div>
-      <div className="relative flex flex-col items-center justify-center h-full mx-8 lg:mx-0">
-        <p className="text-white w-3/4 2xl:w-full text-4xl md:text-6xl mb-4 md:mb-8 text-center">
-          Unforgettable experiences await
+      <div className="relative flex flex-col items-center justify-center h-full lg:mx-0">
+        <p className="text-white w-3/4 2xl:w-full text-4xl font-light md:text-6xl mb-4 md:mb-8 text-center">
+          UNFORGETTABLE EXPERIENCES AWAIT
         </p>
         <Button
           asChild
