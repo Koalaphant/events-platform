@@ -72,6 +72,7 @@ export default async function freeRegister(
           imagePath: event.imagePath,
           description: event.description,
           startTime: event.startTime,
+          location: event.location,
         }}
         order={{
           id: order.id,
