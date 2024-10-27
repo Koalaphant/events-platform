@@ -140,6 +140,18 @@ To begin, sign up for a Ticketmaster developer account and add the following to 
 TICKETMASTER_API_KEY="************"
 ```
 
+Also, add the following to your .env file with your own password for security:
+
+```env
+SEED_API_KEY="************"
+```
+
+Next, visit the seed endpoint using either insomnia or curl which will seed the database with mock data:
+
+```bash
+curl -X POST http://localhost:3000/api/seed -H "x-api-key: YOUR_SEED_API_KEY"
+```
+
 ## Simulating Event Purchases
 
 To test payments, use the following card details in Stripe’s test mode:
