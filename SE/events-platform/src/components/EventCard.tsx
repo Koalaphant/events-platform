@@ -18,6 +18,7 @@ type EventCardProps = {
   description: string;
   imagePath: string;
   startTime: Date;
+  location: string;
 };
 
 export function EventCard({
@@ -27,6 +28,7 @@ export function EventCard({
   description,
   imagePath,
   startTime,
+  location,
 }: EventCardProps) {
   return (
     <Card className="flex overflow-hidden flex-col">
@@ -35,6 +37,7 @@ export function EventCard({
       </div>
       <CardHeader>
         <CardTitle>{name}</CardTitle>
+        <CardDescription>{location}</CardDescription>
         <CardDescription>
           {formatEventDate(new Date(startTime).toISOString())}
         </CardDescription>
