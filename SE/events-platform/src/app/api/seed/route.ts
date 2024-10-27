@@ -4,7 +4,7 @@ import db from "@/db/db";
 
 export async function POST(request: Request) {
   const apiKey = request.headers.get("x-api-key");
-  if (apiKey !== process.env.API_KEY) {
+  if (apiKey !== process.env.SEED_API_KEY) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
