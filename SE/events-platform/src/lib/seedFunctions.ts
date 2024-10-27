@@ -38,7 +38,9 @@ export async function seedEventsFromTicketmaster() {
   for (const ticketmasterEvent of events) {
     const eventData = {
       name: ticketmasterEvent.name,
-      description: ticketmasterEvent.info || "No description available",
+      description:
+        ticketmasterEvent.info ||
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tempus lectus sit amet ante scelerisque varius. Proin tristique diam quis.",
       location: ticketmasterEvent._embedded.venues[0].name,
       priceInPence: Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000,
       startTime: new Date(ticketmasterEvent.dates.start.dateTime).toISOString(),
