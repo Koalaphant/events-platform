@@ -20,7 +20,6 @@ export async function fetchEventsFromTicketmaster() {
   }
 
   const uniqueEvents = new Map();
-
   for (const event of data._embedded.events) {
     if (!uniqueEvents.has(event.name)) {
       uniqueEvents.set(event.name, event);
@@ -34,6 +33,7 @@ export async function seedEventsFromTicketmaster() {
   await clearDatabase();
 
   const events = await fetchEventsFromTicketmaster();
+  console.log(`Fetched ${events.length} events from Ticketmaster.`);
 
   for (const ticketmasterEvent of events) {
     const eventData = {
@@ -41,14 +41,7 @@ export async function seedEventsFromTicketmaster() {
       description: ticketmasterEvent.info || "No description available",
       location: ticketmasterEvent._embedded.venues[0].name,
       priceInPence: Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000,
-      startTime: new Date(
-        new Date(ticketmasterEvent.dates.start.dateTime).getFullYear(),
-        Math.floor(Math.random() * 12),
-        Math.floor(Math.random() * 28) + 1,
-        new Date(ticketmasterEvent.dates.start.dateTime).getHours(),
-        new Date(ticketmasterEvent.dates.start.dateTime).getMinutes(),
-        new Date(ticketmasterEvent.dates.start.dateTime).getSeconds()
-      ).toISOString(),
+      startTime: new Date(ticketmasterEvent.dates.start.dateTime).toISOString(),
       endTime: new Date(
         ticketmasterEvent.dates.end?.dateTime ||
           ticketmasterEvent.dates.start.dateTime
@@ -59,6 +52,7 @@ export async function seedEventsFromTicketmaster() {
     };
 
     const blob = await uploadImageToVercelBlob(eventData.image);
+    console.log("Image uploaded to:", blob.url);
 
     const newEvent = await db.event.create({
       data: {
