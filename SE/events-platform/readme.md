@@ -1,4 +1,4 @@
-# SplendEvent
+# SplendEvent 🎟️
 
 SplendEvent is an events platform designed for seamless event signups, payments, and email confirmations. Customers can register and pay for events, receive confirmation emails, and add events directly to their Google Calendar. Users can also sign up for free events, with similar confirmation processes.
 
