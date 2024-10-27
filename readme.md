@@ -97,7 +97,7 @@ STRIPE_SECRET_KEY="**************"
 stripe listen --forward-to localhost:3000/webhooks/stripe
 ```
 
-4. Copy the webhook secret and add it to your .env file:
+4. Copy the webhook secret generated from your CLI and add it to your .env file:
 
 ```bash
 STRIPE_WEBHOOK_SECRET="**************"
@@ -116,7 +116,7 @@ ADMIN_USERNAME="YOUR_USERNAME_HERE"
 - Use a command-line tool to hash your password.
 - Copy the hashed password and add it to the .env file:
 
-```env
+```bash
 HASHED_ADMIN_PASSWORD="HASHED_PASSWORD_HERE"
 ```
 
@@ -125,7 +125,7 @@ HASHED_ADMIN_PASSWORD="HASHED_PASSWORD_HERE"
 1. Sign up for Resend (it's free).
 2. Add the API key and sender email to your .env file:
 
-```env
+```bash
 RESEND_API_KEY="**************"
 SENDER_EMAIL="onboarding@resend.dev"
 ```
@@ -136,13 +136,13 @@ Seeding the database will involve using the Ticketmaster API to gather event dat
 
 To begin, sign up for a Ticketmaster developer account and add the following to your .env file:
 
-```env
+```bash
 TICKETMASTER_API_KEY="************"
 ```
 
 Also, add the following to your .env file with your own password for security:
 
-```env
+```bash
 SEED_API_KEY="************"
 ```
 
@@ -161,7 +161,7 @@ To test payments, use the following card details in Stripe’s test mode:
 - Security Code: Any
 - Country: Any
 - Postcode: Any
-- Email: Use the email you signed up with on Resend to receive the order confirmation.
+- Email: Use the email you signed up with on Resend to receive the order confirmation otherwise you will not receive the confirmation email.
 
 ## Requirements
 
