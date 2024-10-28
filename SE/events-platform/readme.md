@@ -6,8 +6,8 @@ There is no traditional account system. Instead, users can request an order hist
 
 ## View Live Version
 
-- Customer url: [https://splend-event.vercel.app/](https://splend-event.vercel.app/)
-- Admin url: [https://splend-event.vercel.app/admin](https://splend-event.vercel.app/admin)
+- Customer url: [https://splendevent.vercel.app/](https://splendevent.vercel.app/)
+- Admin url: [https://splendevent.vercel.app/admin](https://splendevent.vercel.app/admin)
 
 ## Technology Stack
 
