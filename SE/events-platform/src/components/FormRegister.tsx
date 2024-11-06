@@ -19,14 +19,10 @@ export default function FormRegister({ event }: { event: Event }) {
 
   return (
     <div className="w-full">
-      {" "}
-      {/* Ensure full width but contained */}
       <form
         action={action}
         className="flex flex-col gap-2 mt-4 w-full max-w-md mx-auto"
       >
-        {" "}
-        {/* Max width with centering */}
         <Input type="hidden" name="eventId" value={event.id} />
         <Input
           type="email"
@@ -34,8 +30,7 @@ export default function FormRegister({ event }: { event: Event }) {
           placeholder="Email"
           required
           className="w-full"
-        />{" "}
-        {/* Full width input */}
+        />
         {data.error && <div className="text-destructive">{data.error}</div>}
         {data.message ? (
           <p className="text-center">{data.message}</p>
@@ -51,6 +46,7 @@ export default function FormRegister({ event }: { event: Event }) {
             event={{
               name: event.name,
               startTime: event.startTime,
+              endTime: event.endTime,
               location: event.location,
               description: event.description,
             }}
