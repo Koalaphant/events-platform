@@ -51,6 +51,10 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ success: true });
+  } else {
+    return new NextResponse("Event type received but not processed", {
+      status: 200,
+    });
   }
 
   return new NextResponse("Event type not handled", { status: 400 });
