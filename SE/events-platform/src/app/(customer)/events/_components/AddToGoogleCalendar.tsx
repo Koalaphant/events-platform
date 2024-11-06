@@ -3,6 +3,7 @@ import React from "react";
 
 interface Event {
   startTime: string;
+  endTime: string;
   name: string;
   description: string;
   location: string;
@@ -28,11 +29,15 @@ const createGoogleCalendarLink = (event: Event) => {
   const startTime = new Date(event.startTime)
     .toISOString()
     .replace(/-|:|\.\d+/g, "")
-    .slice(0, 15); // Format: YYYYMMDDTHHMMSS
+    .slice(0, 15);
+  const endTime = new Date(event.endTime)
+    .toISOString()
+    .replace(/-|:|\.\d+/g, "")
+    .slice(0, 15);
 
   return `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
     event.name
-  )}&dates=${startTime}/${startTime}&details=${encodeURIComponent(
+  )}&dates=${startTime}/${endTime}&details=${encodeURIComponent(
     event.description
   )}&location=${encodeURIComponent(event.location)}`;
 };

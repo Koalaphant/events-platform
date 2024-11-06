@@ -21,15 +21,20 @@ const imageSchema = fileSchema.refine(
   (file) => file.size === 0 || file.type.startsWith("image/")
 );
 
-const addSchema = z.object({
-  name: z.string().min(1),
-  priceInPence: z.coerce.number().int().min(0),
-  description: z.string().min(1),
-  location: z.string().min(1),
-  image: imageSchema.refine((file) => file.size > 0, "Required"),
-  startTime: z.coerce.date().transform((date) => date.toISOString()),
-  endTime: z.coerce.date().transform((date) => date.toISOString()),
-});
+const addSchema = z
+  .object({
+    name: z.string().min(1),
+    priceInPence: z.coerce.number().int().min(0),
+    description: z.string().min(1),
+    location: z.string().min(1),
+    image: imageSchema.refine((file) => file.size > 0, "Required"),
+    startTime: z.coerce.date().transform((date) => date.toISOString()),
+    endTime: z.coerce.date().transform((date) => date.toISOString()),
+  })
+  .refine((data) => new Date(data.endTime) > new Date(data.startTime), {
+    message: "End time must be later than start time",
+    path: ["endTime"],
+  });
 
 async function uploadImageToVercelBlob(
   imageFile: File
@@ -92,9 +97,20 @@ export async function deleteEvent(id: string) {
   revalidatePath("/events");
 }
 
-const editSchema = addSchema.extend({
-  image: imageSchema.optional(),
-});
+const editSchema = z
+  .object({
+    name: z.string().min(1),
+    priceInPence: z.coerce.number().int().min(0),
+    description: z.string().min(1),
+    location: z.string().min(1),
+    image: imageSchema.optional(),
+    startTime: z.coerce.date().transform((date) => date.toISOString()),
+    endTime: z.coerce.date().transform((date) => date.toISOString()),
+  })
+  .refine((data) => new Date(data.endTime) > new Date(data.startTime), {
+    message: "End time must be later than start time",
+    path: ["endTime"],
+  });
 
 export async function updateEvent(
   id: string,

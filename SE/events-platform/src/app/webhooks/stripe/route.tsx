@@ -23,9 +23,7 @@ export async function POST(req: NextRequest) {
     const pricePaidInPence = charge.amount;
 
     const event = await db.event.findUnique({
-      where: {
-        id: eventId,
-      },
+      where: { id: eventId },
     });
     if (event === null || email == null) {
       return new NextResponse("Bad Request", { status: 400 });
@@ -52,6 +50,8 @@ export async function POST(req: NextRequest) {
       react: <PurchaseReceiptEmail order={order} event={event} />,
     });
 
-    return new NextResponse();
+    return NextResponse.json({ success: true });
   }
+
+  return new NextResponse("Event type not handled", { status: 400 });
 }
