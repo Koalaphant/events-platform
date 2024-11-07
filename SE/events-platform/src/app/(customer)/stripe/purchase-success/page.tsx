@@ -33,7 +33,6 @@ export default async function SuccessPage({
     startTime: event.startTime.toISOString(),
     endTime: event.endTime.toISOString(),
   };
-  console.log(formattedEvent);
 
   return (
     <div className="max-w-3xl w-full mx-auto mt-20">

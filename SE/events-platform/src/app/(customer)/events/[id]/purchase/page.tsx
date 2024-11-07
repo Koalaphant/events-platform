@@ -2,6 +2,7 @@ import db from "@/db/db";
 import { notFound } from "next/navigation";
 import Stripe from "stripe";
 import { CheckoutForm } from "./_components/CheckoutForm";
+import { auth } from "@clerk/nextjs/server";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
@@ -10,6 +11,8 @@ export default async function PurchasePage({
 }: {
   params: { id: string };
 }) {
+  const { userId } = await auth();
+
   const event = await db.event.findUnique({
     where: { id },
   });
@@ -21,6 +24,7 @@ export default async function PurchasePage({
     currency: "gbp",
     metadata: {
       eventId: event.id,
+      userId: userId,
     },
   });
 

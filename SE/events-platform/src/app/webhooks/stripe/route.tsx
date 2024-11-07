@@ -8,6 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 export async function POST(req: NextRequest) {
+  console.log("FIRE HERE PLS!!!!");
   const event = await stripe.webhooks.constructEvent(
     await req.text(),
     req.headers.get("stripe-signature") as string,
@@ -19,8 +20,11 @@ export async function POST(req: NextRequest) {
   if (stripeEvent.type === "charge.succeeded") {
     const charge = stripeEvent.data.object as Stripe.Charge;
     const eventId = charge.metadata.eventId;
+    const userId = charge.metadata.userId;
     const email = charge.billing_details.email;
     const pricePaidInPence = charge.amount;
+
+    console.log(">>>>>>", userId);
 
     const event = await db.event.findUnique({
       where: { id: eventId },
@@ -46,7 +50,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: `Splend Event Support <${process.env.SENDER_EMAIL}>`,
       to: email,
-      subject: "Your ticket is confirmed",
+      subject: "Your ticket is confirmed!",
       react: <PurchaseReceiptEmail order={order} event={event} />,
     });
 
