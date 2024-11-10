@@ -21,7 +21,6 @@ function getUsers() {
   return db.user.findMany({
     select: {
       id: true,
-      email: true,
       orders: { select: { pricePaidInPence: true } },
     },
     orderBy: { createdAt: "desc" },
@@ -45,7 +44,7 @@ async function UsersTable() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Email</TableHead>
+          <TableHead>User ID</TableHead>
           <TableHead>Orders</TableHead>
           <TableHead>Total Spent</TableHead>
           <TableHead className="w-0">
@@ -56,7 +55,7 @@ async function UsersTable() {
       <TableBody>
         {users.map((user) => (
           <TableRow key={user.id}>
-            <TableCell>{user.email}</TableCell>
+            <TableCell>{user.id}</TableCell>
             <TableCell>{user.orders.length}</TableCell>
             <TableCell>
               {formatCurrency(

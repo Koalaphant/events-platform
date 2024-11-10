@@ -52,7 +52,11 @@ async function EventsTable() {
   });
 
   if (events.length === 0) {
-    return <p>No events found</p>;
+    return (
+      <div>
+        <p>No events found</p>
+      </div>
+    );
   }
 
   return (

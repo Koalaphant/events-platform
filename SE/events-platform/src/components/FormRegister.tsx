@@ -1,8 +1,8 @@
 "use client";
 import freeRegister from "@/actions/free-register";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useFormState } from "react-dom";
+import { useAuth } from "@clerk/nextjs"; // Import useAuth for accessing userId
 import AddToGoogleCalendar from "@/app/(customer)/events/_components/AddToGoogleCalendar";
 
 type Event = {
@@ -15,7 +15,13 @@ type Event = {
 };
 
 export default function FormRegister({ event }: { event: Event }) {
+  const { userId } = useAuth(); // Get user from Clerk
   const [data, action] = useFormState(freeRegister, {});
+
+  // Ensure user is authenticated before rendering form
+  if (!userId) {
+    return <p>You must be logged in to register for the event.</p>;
+  }
 
   return (
     <div className="w-full">
@@ -23,14 +29,8 @@ export default function FormRegister({ event }: { event: Event }) {
         action={action}
         className="flex flex-col gap-2 mt-4 w-full max-w-md mx-auto"
       >
-        <Input type="hidden" name="eventId" value={event.id} />
-        <Input
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          className="w-full"
-        />
+        <input type="hidden" name="eventId" value={event.id} />
+        <input type="hidden" name="userId" value={userId} /> {/* Pass userId */}
         {data.error && <div className="text-destructive">{data.error}</div>}
         {data.message ? (
           <p className="text-center">{data.message}</p>

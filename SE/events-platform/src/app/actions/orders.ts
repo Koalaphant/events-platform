@@ -2,10 +2,10 @@
 
 import db from "@/db/db";
 
-export async function userOrderExists(email: string, eventId: string) {
+export async function userOrderExists(userId: string, eventId: string) {
   return (
     (await db.order.findFirst({
-      where: { user: { email }, eventId },
+      where: { userId, eventId }, // Use userId to check for existing order
       select: { id: true },
     })) != null
   );

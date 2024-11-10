@@ -14,7 +14,6 @@ import {
 import { formatCurrency, formatEventTime } from "@/lib/formatters";
 import {
   Elements,
-  LinkAuthenticationElement,
   PaymentElement,
   useElements,
   useStripe,
@@ -22,6 +21,7 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import Image from "next/image";
 import { FormEvent, useState } from "react";
+import { useAuth } from "@clerk/nextjs";
 
 type CheckoutFormProps = {
   event: {
@@ -98,20 +98,20 @@ function Form({
   priceInPence: number;
   eventId: string;
 }) {
+  const { userId } = useAuth(); 
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
-  const [email, setEmail] = useState<string>();
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    if (stripe == null || elements == null || email == null) return;
+    if (stripe == null || elements == null || !userId) return;
 
     setIsLoading(true);
 
-    const orderExists = await userOrderExists(email, eventId);
+    const orderExists = await userOrderExists(userId, eventId); // Check using user.id
 
     if (orderExists) {
       setErrorMessage("You have already purchased this event");
@@ -130,7 +130,7 @@ function Form({
         if (error.type === "card_error" || error.type === "validation_error") {
           setErrorMessage(error.message);
         } else {
-          setErrorMessage("An unknown error occured");
+          setErrorMessage("An unknown error occurred");
         }
       })
       .finally(() => {
@@ -151,11 +151,6 @@ function Form({
         </CardHeader>
         <CardContent>
           <PaymentElement />
-          <div className="mt-4">
-            <LinkAuthenticationElement
-              onChange={(e) => setEmail(e.value.email)}
-            />
-          </div>
         </CardContent>
         <CardFooter>
           <Button

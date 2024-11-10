@@ -1,11 +1,8 @@
 import db from "@/db/db";
-import PurchaseReceiptEmail from "@/email/PurchaseReceipt";
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
-const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 export async function POST(req: NextRequest) {
   const event = await stripe.webhooks.constructEvent(
@@ -19,35 +16,40 @@ export async function POST(req: NextRequest) {
   if (stripeEvent.type === "charge.succeeded") {
     const charge = stripeEvent.data.object as Stripe.Charge;
     const eventId = charge.metadata.eventId;
-    const email = charge.billing_details.email;
+    const userId = charge.metadata.userId;
     const pricePaidInPence = charge.amount;
 
     const event = await db.event.findUnique({
       where: { id: eventId },
     });
-    if (event === null || email == null) {
+
+    if (event === null) {
       return new NextResponse("Bad Request", { status: 400 });
     }
 
+    const existingOrder = await db.order.findFirst({
+      where: {
+        userId,
+        eventId,
+      },
+    });
+
+    if (existingOrder) {
+      return new NextResponse("You have already purchased this event", {
+        status: 400,
+      });
+    }
+
     const userFields = {
-      email,
+      id: userId,
       orders: { create: { eventId, pricePaidInPence } },
     };
 
-    const {
-      orders: [order],
-    } = await db.user.upsert({
-      where: { email },
+    await db.user.upsert({
+      where: { id: userId },
       create: userFields,
       update: userFields,
       select: { orders: { orderBy: { createdAt: "desc" }, take: 1 } },
-    });
-
-    await resend.emails.send({
-      from: `Splend Event Support <${process.env.SENDER_EMAIL}>`,
-      to: email,
-      subject: "Your ticket is confirmed",
-      react: <PurchaseReceiptEmail order={order} event={event} />,
     });
 
     return NextResponse.json({ success: true });
@@ -57,5 +59,5 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  return new NextResponse("Event type not handled", { status: 400 });
+  return new NextResponse("Event type not handled", { status: 200 });
 }

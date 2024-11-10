@@ -56,7 +56,7 @@ export async function seedEventsFromTicketmaster() {
     const blob = await uploadImageToVercelBlob(eventData.image);
     console.log("Image uploaded to:", blob.url);
 
-    const newEvent = await db.event.create({
+    await db.event.create({
       data: {
         name: eventData.name,
         description: eventData.description,
@@ -66,20 +66,6 @@ export async function seedEventsFromTicketmaster() {
         endTime: eventData.endTime,
         imagePath: blob.url,
         isAvailable: true,
-      },
-    });
-
-    const newUser = await db.user.create({
-      data: {
-        email: `user${crypto.randomUUID()}@example.com`,
-      },
-    });
-
-    await db.order.create({
-      data: {
-        pricePaidInPence: newEvent.priceInPence,
-        userId: newUser.id,
-        eventId: newEvent.id,
       },
     });
   }

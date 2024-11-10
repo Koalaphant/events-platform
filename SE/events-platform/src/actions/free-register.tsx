@@ -1,86 +1,49 @@
 "use server";
 
 import db from "@/db/db";
-import { userOrderExists } from "@/app/actions/orders";
 import { z } from "zod";
-import PurchaseReceiptEmail from "@/email/PurchaseReceipt";
-import { Resend } from "resend";
 
-const emailSchema = z.string().email();
-const resend = new Resend(process.env.RESEND_API_KEY as string);
+const eventIdSchema = z.string();
+const userIdSchema = z.string();
+
 export default async function freeRegister(
   prevState: unknown,
   formData: FormData
 ): Promise<{ message?: string; error?: string }> {
-  const email = formData.get("email") as string;
   const eventId = formData.get("eventId") as string;
+  const userId = formData.get("userId") as string;
 
-  const result = emailSchema.safeParse(email);
-  if (!result.success) {
-    return { error: "Invalid email address" };
+  const eventResult = eventIdSchema.safeParse(eventId);
+  const userResult = userIdSchema.safeParse(userId);
+
+  if (!eventResult.success || !userResult.success) {
+    return { error: "Invalid data" };
   }
 
   const event = await db.event.findUnique({
-    where: {
-      id: eventId,
-    },
+    where: { id: eventId },
   });
 
   if (!event) {
     return { error: "Event not found" };
   }
 
-  const orderExists = await userOrderExists(email, eventId);
+  const orderExists = await db.order.findFirst({
+    where: { eventId, userId },
+  });
 
   if (orderExists) {
     return { error: "You are already registered for this event." };
   }
 
-  const userFields = {
-    email,
-    orders: {
-      create: {
-        eventId,
-        pricePaidInPence: 0,
-      },
-    },
+  const orderFields = {
+    pricePaidInPence: 0,
+    userId,
+    eventId,
   };
 
-  await db.user.upsert({
-    where: { email },
-    create: userFields,
-    update: userFields,
-  });
-
-  const order = await db.order.findFirst({
-    where: { eventId, user: { email } },
-    orderBy: { createdAt: "desc" },
-  });
-
-  if (!order) {
-    return { error: "Order creation failed." };
-  }
-
-  await resend.emails.send({
-    from: `SplendEvent Support <${process.env.SENDER_EMAIL}>`,
-    to: email,
-    subject: "Event Purchase Receipt",
-    react: (
-      <PurchaseReceiptEmail
-        event={{
-          name: event.name,
-          imagePath: event.imagePath,
-          description: event.description,
-          startTime: event.startTime,
-          location: event.location,
-        }}
-        order={{
-          id: order.id,
-          createdAt: order.createdAt,
-          pricePaidInPence: order.pricePaidInPence,
-        }}
-      />
-    ),
+  await db.order.create({
+    data: orderFields,
   });
 
   return {

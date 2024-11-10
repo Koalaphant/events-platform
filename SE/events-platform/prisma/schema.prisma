@@ -27,21 +27,20 @@ model Event {
 }
 
 model User {
-  id                String      @id     @default(uuid())
-  email             String      @unique
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-  orders            Order[]
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
 }
 
 model Order {
   id                String      @id     @default(uuid())
-  pricePaidInPence      Int
+  pricePaidInPence  Int
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
 
   userId            String
   eventId           String
   user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  event           Event         @relation(fields: [eventId], references: [id], onDelete: Restrict)
+  event             Event       @relation(fields: [eventId], references: [id], onDelete: Restrict)
 }
