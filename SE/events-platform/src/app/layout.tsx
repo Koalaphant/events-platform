@@ -21,7 +21,7 @@ interface Props {
 
 export default function RootLayout({ children }: Props) {
   return (
-    <ClerkProvider dynamic>
+    <ClerkProvider>
       <html lang="en">
         <body
           className={cn(

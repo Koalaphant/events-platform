@@ -1,7 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-// Define public routes for unauthenticated users
 const isPublicRoute = createRouteMatcher([
   "/",
   "/events(.*)",

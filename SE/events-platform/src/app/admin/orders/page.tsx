@@ -23,7 +23,7 @@ function getOrders() {
       id: true,
       pricePaidInPence: true,
       event: { select: { name: true } },
-      user: { select: { email: true } },
+      user: { select: { id: true } },
     },
     orderBy: { createdAt: "desc" },
   });
@@ -58,7 +58,7 @@ async function OrdersTable() {
         {orders.map((order) => (
           <TableRow key={order.id}>
             <TableCell>{order.event.name}</TableCell>
-            <TableCell>{order.user.email}</TableCell>
+            <TableCell>{order.user.id}</TableCell>
             <TableCell>
               {formatCurrency(order.pricePaidInPence / 100)}
             </TableCell>

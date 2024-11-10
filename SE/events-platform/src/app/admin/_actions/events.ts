@@ -64,7 +64,7 @@ export async function addEvent(prevState: unknown, formData: FormData) {
       priceInPence: data.priceInPence,
       description: data.description,
       location: data.location,
-      imagePath: blob.url, // Store the blob URL
+      imagePath: blob.url, 
       startTime: data.startTime,
       endTime: data.endTime,
     },
