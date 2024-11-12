@@ -21,7 +21,8 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import Image from "next/image";
 import { FormEvent, useState } from "react";
-import { useAuth } from "@clerk/nextjs";
+import { SignedIn, SignedOut, useAuth } from "@clerk/nextjs";
+import Link from "next/link";
 
 type CheckoutFormProps = {
   event: {
@@ -83,9 +84,23 @@ export function CheckoutForm({ event, clientSecret }: CheckoutFormProps) {
         <p className="text-lg">{event.description}</p>
       </div>
       <div className="mx-4 lg:mx-0">
-        <Elements options={{ clientSecret }} stripe={stripePromise}>
-          <Form priceInPence={event.priceInPence} eventId={event.id} />
-        </Elements>
+        <SignedIn>
+          <Elements options={{ clientSecret }} stripe={stripePromise}>
+            <Form priceInPence={event.priceInPence} eventId={event.id} />
+          </Elements>
+        </SignedIn>
+        <SignedOut>
+          <div className="flex flex-col text-center mt-20 gap-5">
+            <p className="font-bold text-2xl">
+              Please sign in to purchase your ticket!
+            </p>
+            <Button asChild>
+              <Link className="text-xl py-7" href="/sign-in">
+                Sign In
+              </Link>
+            </Button>
+          </div>
+        </SignedOut>
       </div>
     </div>
   );
@@ -98,7 +113,7 @@ function Form({
   priceInPence: number;
   eventId: string;
 }) {
-  const { userId } = useAuth(); 
+  const { userId } = useAuth();
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);

@@ -10,7 +10,6 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Get userId and userRole from Clerk's auth
   const { sessionClaims } = await auth();
   const userRole = sessionClaims?.metadata?.role;
 

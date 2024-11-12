@@ -33,6 +33,8 @@ export default async function PurchasePage({
   }
 
   return (
-    <CheckoutForm event={event} clientSecret={paymentIntent.client_secret} />
+    <div>
+      <CheckoutForm event={event} clientSecret={paymentIntent.client_secret} />
+    </div>
   );
 }
