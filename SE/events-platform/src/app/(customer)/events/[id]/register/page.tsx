@@ -4,6 +4,9 @@ import Image from "next/image";
 import FormRegister from "@/components/FormRegister";
 import { FiClock, FiMapPin, FiTag } from "react-icons/fi";
 import { formatCurrency, formatEventTime } from "@/lib/formatters";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const event = await db.event.findUnique({
@@ -56,11 +59,26 @@ export default async function Page({ params }: { params: { id: string } }) {
         <p className="text-lg">{event.description}</p>
       </div>
       <div className="w-full">
-        <p className="text-center">
-          You are registering for a free event. Please enter your email address
-          to confirm your place.
-        </p>
-        <FormRegister event={formattedEvent} />
+        <SignedIn>
+          <p className="text-center">
+            You are registering for a free event. Please sign up by clicking the
+            button below.
+          </p>
+
+          <FormRegister event={formattedEvent} />
+        </SignedIn>
+        <SignedOut>
+          <div className="flex flex-col text-center mt-20 gap-5">
+            <p className="font-bold text-2xl">
+              Please sign in to purchase your ticket!
+            </p>
+            <Button>
+              <Link className="text-xl py-7" href="/sign-in">
+                Sign In
+              </Link>
+            </Button>
+          </div>
+        </SignedOut>
       </div>
     </div>
   );

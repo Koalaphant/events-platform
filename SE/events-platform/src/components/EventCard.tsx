@@ -33,7 +33,12 @@ export function EventCard({
   return (
     <Card className="flex overflow-hidden flex-col">
       <div className="relative w-full h-auto aspect-video">
-        <Image src={imagePath} fill alt={name} />
+        <Image
+          src={imagePath}
+          fill
+          alt={name}
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
       </div>
       <CardHeader>
         <CardTitle>{name}</CardTitle>
@@ -72,7 +77,7 @@ export function EventCardSkeleton() {
           <div className="w-3/4 h-6 rounded-full bg-gray-300" />
         </CardTitle>
         <CardDescription>
-          <div className="w-1/2 h-4 rounded-full bg-gray-300" />
+          <span className="w-1/2 h-4 rounded-full bg-gray-300" />
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
