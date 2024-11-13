@@ -36,6 +36,9 @@ export async function seedEventsFromTicketmaster() {
   console.log(`Fetched ${events.length} events from Ticketmaster.`);
 
   for (const ticketmasterEvent of events) {
+    const startTime = new Date(ticketmasterEvent.dates.start.dateTime);
+    const endTime = new Date(startTime.getTime() + 1 * 60 * 60 * 1000); // Add 1 hour in milliseconds
+
     const eventData = {
       name: ticketmasterEvent.name,
       description:
@@ -43,11 +46,8 @@ export async function seedEventsFromTicketmaster() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tempus lectus sit amet ante scelerisque varius. Proin tristique diam quis.",
       location: ticketmasterEvent._embedded.venues[0].name,
       priceInPence: Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000,
-      startTime: new Date(ticketmasterEvent.dates.start.dateTime).toISOString(),
-      endTime: new Date(
-        ticketmasterEvent.dates.end?.dateTime ||
-          ticketmasterEvent.dates.start.dateTime
-      ).toISOString(),
+      startTime: startTime.toISOString(),
+      endTime: endTime.toISOString(),
       image: (await fetch(ticketmasterEvent.images[0].url).then((res) =>
         res.blob()
       )) as File,
