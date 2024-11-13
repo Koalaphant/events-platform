@@ -1,24 +1,36 @@
 # SplendEvent 🎟️
 
-SplendEvent is an events platform designed for seamless event signups, payments, and email confirmations. Customers can register and pay for events, receive confirmation emails, and add events directly to their Google Calendar. Users can also sign up for free events, with similar confirmation processes.
-
-There is no traditional account system. Instead, users can request an order history via email by simply entering the email they used to sign up for events.
+SplendEvent is an events platform that allows users to create accounts, log in, and register for both paid and free events. Users can view a list of their orders directly on the platform and add events to their Google Calendar.
 
 ## View Live Version
 
 - Customer url: [https://splendevent.vercel.app/](https://splendevent.vercel.app/)
 - Admin url: [https://splendevent.vercel.app/admin](https://splendevent.vercel.app/admin)
 
+## Features
+### User:
+- Display community events (paid and free)
+- User account creation and login
+- Register for free events and purchase paid events
+- Add events to Google Calendar
+- View a list of registered events in the user's account
+
+### Admin:
+- Create and display events
+- View sales and customer data
+
+
 ## Technology Stack
 
 - Next.js and TypeScript
+- Clerk (Authentication)
 - Database: PostgreSQL (With Prisma ORM)
 - Hosting: Vercel (including file storage for images)
 - Payments: Stripe API for ticket purchases
 
 ## Admin Panel
 
-SplendEvent includes an admin panel that allows event management, toggling event availability, viewing sales and customer data, and editing event information. The admin panel is secured by a username and password.
+SplendEvent includes an admin panel that allows event management, toggling event availability, viewing sales and customer data, and editing event information. The admin route is protected, meaning only users with admin privileges can access it. Admin permissions are granted through Clerk’s dashboard by adding a custom role (admin) to the user’s metadata.
 
 Access this using [http://localhost:3000/admin](http://localhost:3000/admin)
 
@@ -103,32 +115,36 @@ stripe listen --forward-to localhost:3000/webhooks/stripe
 STRIPE_WEBHOOK_SECRET="**************"
 ```
 
-## Admin Login Setup
+## Setting up Clerk Authentication
 
-1. Add your admin username to the .env file:
+1. Sign up with Clerk: [https://clerk.com/](hhttps://clerk.com/)
+2. Copy the publishable and secret key and add this to your .env file
 
 ```bash
-ADMIN_USERNAME="YOUR_USERNAME_HERE"
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="************"
+CLERK_SECRET_KEY="************"
 ```
 
-2. To hash your password:
+3. Add the following to your .env file:
 
-- Use a command-line tool to hash your password.
-- Copy the hashed password and add it to the .env file:
-
-```env
-HASHED_ADMIN_PASSWORD="HASHED_PASSWORD_HERE"
+```bash
+NEXT_PUBLIC_CLERK_SIGN_IN_URL="/sign-in"
+NEXT_PUBLIC_CLERK_SIGN_UP_URL="/sign-up"
 ```
 
-### Email Setup
+## Admin Access Setup
 
-1. Sign up for Resend (it's free).
-2. Add the API key and sender email to your .env file:
+1. Have the user sign up on the website: [https://splendevent.vercel.app/sign-up](https://splendevent.vercel.app/sign-up)
 
-```env
-RESEND_API_KEY="**************"
-SENDER_EMAIL="onboarding@resend.dev"
+2. In the Clerk admin panel, locate the user you want to assign admin privileges to.
+
+3. Under **User Metadata**, add the following:
+
+```json
+{ "role": "admin" }
 ```
+
+The user will now have admin access.
 
 ## Database Seeding
 
@@ -161,7 +177,6 @@ To test payments, use the following card details in Stripe’s test mode:
 - Security Code: Any
 - Country: Any
 - Postcode: Any
-- Email: Use the email you signed up with on Resend to receive the order confirmation.
 
 ## Requirements
 
@@ -171,3 +186,4 @@ To test payments, use the following card details in Stripe’s test mode:
 - **Prisma**: ^5.20.0
 - **Stripe**: ^17.1.0
 - **Tailwind CSS**: ^3.4.1
+- **Clerk**: ^6.2.1
