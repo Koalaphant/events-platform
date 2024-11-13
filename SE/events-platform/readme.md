@@ -7,6 +7,15 @@ SplendEvent is an events platform that allows users to create accounts, log in, 
 - Customer url: [https://splendevent.vercel.app/](https://splendevent.vercel.app/)
 - Admin url: [https://splendevent.vercel.app/admin](https://splendevent.vercel.app/admin)
 
+## Test Accounts
+### Admin Account
+- Email: admin@test.com
+- Password: admin1234
+
+### User Account
+- Email: user@test.com
+- Password: user1234
+
 ## Features
 ### User:
 - Display community events (paid and free)
