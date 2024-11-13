@@ -29,7 +29,9 @@ export function EventForm({ event }: { event?: Event | null }) {
   return (
     <form action={action} className="space-y-8">
       <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
+        <Label htmlFor="name">
+          Name<span className="text-red-500">*</span>
+        </Label>
         <Input
           type="text"
           id="name"
@@ -40,7 +42,9 @@ export function EventForm({ event }: { event?: Event | null }) {
         {error.name && <div className="text-destructive">{error.name}</div>}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="location">Location</Label>
+        <Label htmlFor="location">
+          Location<span className="text-red-500">*</span>
+        </Label>
         <Input
           type="text"
           id="location"
@@ -53,7 +57,9 @@ export function EventForm({ event }: { event?: Event | null }) {
         )}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="startTime">Start Time</Label>
+        <Label htmlFor="startTime">
+          Start Time<span className="text-red-500">*</span>
+        </Label>
         <Input
           type="datetime-local"
           id="startTime"
@@ -67,7 +73,9 @@ export function EventForm({ event }: { event?: Event | null }) {
         )}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="endTime">End Time</Label>
+        <Label htmlFor="endTime">
+          End Time<span className="text-red-500">*</span>
+        </Label>
         <Input
           type="datetime-local"
           id="endTime"
@@ -81,7 +89,9 @@ export function EventForm({ event }: { event?: Event | null }) {
         )}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="priceInPence">Price In Pence</Label>
+        <Label htmlFor="priceInPence">
+          Price In Pence<span className="text-red-500">*</span>
+        </Label>
         <Input
           type="number"
           id="priceInPence"
@@ -98,7 +108,9 @@ export function EventForm({ event }: { event?: Event | null }) {
         )}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
+        <Label htmlFor="description">
+          Description<span className="text-red-500">*</span>
+        </Label>
         <Textarea
           id="description"
           name="description"
@@ -107,8 +119,10 @@ export function EventForm({ event }: { event?: Event | null }) {
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="image">Image</Label>
-        <Input type="file" id="image" name="image" required={event == null} />
+        <Label htmlFor="image">
+          Image<span className="text-red-500">*</span>
+        </Label>
+        <Input type="file" id="image" name="image" />
         {event != null && (
           <Image
             src={event.imagePath}
