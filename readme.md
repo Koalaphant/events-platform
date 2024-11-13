@@ -12,12 +12,12 @@ SplendEvent is an events platform that allows users to create accounts, log in, 
 ### Admin Account
 
 - Email: admin@test.com
-- Password: admin1234
+- Password: AdMiN2024
 
 ### User Account
 
 - Email: user@test.com
-- Password: user1234
+- Password: UsEr2024
 
 ## Features
 
